@@ -1,4 +1,4 @@
-# Example App with VueJS and [Hasura](https://hasura.io/) 
+# Example App with React and [Hasura](https://hasura.io/) 
 
 ## development
 #### `docker-compose up`
