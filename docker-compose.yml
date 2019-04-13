@@ -9,4 +9,4 @@ services:
     environment:
       - HASURA_GRAPHQL_DATABASE_URL=postgres://postgres:postgres_password@postgres:5432/postgres # postgresql defaults
       - HASURA_GRAPHQL_ENABLE_CONSOLE=true
-      - HASURA_GRAPHQL_ADMIN_SECRET=mysupersecretsecret
+      - HASURA_GRAPHQL_ADMIN_SECRET="mysupersecretsecret"
