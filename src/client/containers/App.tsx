@@ -2,6 +2,8 @@ import * as React from 'react';
 
 export default () => {
   return (
-    <div>It's working</div>
+    <div>
+      <button>Initialise App</button>
+    </div>
   );
 }

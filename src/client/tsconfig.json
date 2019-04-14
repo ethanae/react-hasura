@@ -9,9 +9,9 @@
     "sourceMap": true
   },
   "include": [
-    "./src/client/**/*"
+    "./**/*"
   ],
   "exclude": [
-    "./src/client/node_modules"
+    "./node_modules"
   ]
 }
