@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "start-container": "webpack-dev-server --host 0.0.0.0"
   },
   "dependencies": {
     "react": "^16.8.6",
