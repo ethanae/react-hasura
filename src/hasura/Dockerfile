@@ -1,7 +1,5 @@
 FROM alpine as builder
-RUN apk add curl
-RUN ["curl", "-L", "https://github.com/hasura/graphql-engine/raw/master/cli/get.sh | INSTALL_PATH=$HOME/bin/sh"]
-RUN ["/bin/sh", "-c", "hasura metadata track --all-tables --all-relationships --schema dota2"]
+# RUN sudo curl -L https://github.com/hasura/graphql-engine/raw/master/cli/get.sh | INSTALL_PATH=$PATH/bin sudo bash
 FROM hasura/graphql-engine
-# RUN ["hasura", "metadata", "track", "--all-tables", "--all-relationships", "--schema", "dota2"]
+# SHELL ["/bin/bash", "-c"] to change the default shell
 COPY --from=builder . .
