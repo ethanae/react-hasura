@@ -12,14 +12,14 @@ services:
       - HASURA_GRAPHQL_DATABASE_URL=postgres://postgres:postgres_password@postgres:5432/postgres # postgresql defaults
       - HASURA_GRAPHQL_ENABLE_CONSOLE=true
       - HASURA_GRAPHQL_ADMIN_SECRET="jkasvbdhbjaasdkahbsd"
-  app:
-    build:
-      context: ./src/client
-    ports:
-      - "9000:9000"
-    volumes:
-      - /app/node_modules
-      - ./src/client:/app
+  # app:
+  #   build:
+  #     context: ./src/client
+  #   ports:
+  #     - "9000:9000"
+  #   volumes:
+  #     - /app/node_modules
+  #     - ./src/client:/app
   server:
     build:
       context: ./src/server
