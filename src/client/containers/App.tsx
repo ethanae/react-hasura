@@ -22,15 +22,16 @@ const query = gql`
 `;
 
 export default class extends React.Component<{}, IState> {
-  constructor(props: any) { 
+  constructor(props: any) {
     super(props);
     this.state = {
       teams: [] as Array<ITeam>
     } 
   }
   onInitialiseApp = async (client: ApolloClient<any>) => {
-    const teams = await client.query({ query });
-    this.setState({ teams: teams.data });
+    const response = await client.query({ query });
+    console.log(response.data.dota2_team);
+    this.setState({ teams: response.data.dota2_team });
   }
 
   render() {
