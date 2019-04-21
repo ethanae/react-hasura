@@ -1,7 +1,13 @@
 import * as React from 'react';
 import gql from 'graphql-tag';
 import { ApolloClient } from 'apollo-boost';
-import { ApolloConsumer } from "react-apollo";
+import { ApolloConsumer } from 'react-apollo';
+
+import { ITeam } from '../types';
+
+export interface IState {
+  teams: Array<ITeam>;
+}
 
 const query = gql`
   {
@@ -15,10 +21,16 @@ const query = gql`
   }
 `;
 
-export default class extends React.Component {
-  constructor(props: any) { super(props); }
-  onInitialiseApp = (client: ApolloClient<any>) => {
-    client.query({ query }).then((result: any) => console.log(result), (err: any) => console.log({ err }));
+export default class extends React.Component<{}, IState> {
+  constructor(props: any) { 
+    super(props);
+    this.state = {
+      teams: [] as Array<ITeam>
+    } 
+  }
+  onInitialiseApp = async (client: ApolloClient<any>) => {
+    const teams = await client.query({ query });
+    this.setState({ teams: teams.data });
   }
 
   render() {
