@@ -1,13 +1,10 @@
 import * as React from 'react';
 import gql from 'graphql-tag';
-import { ApolloClient } from 'apollo-boost';
+import { ApolloClient, InMemoryCache } from 'apollo-boost';
 import { ApolloConsumer } from 'react-apollo';
 
 import { ITeam } from '../types';
-
-export interface IState {
-  teams: Array<ITeam>;
-}
+import TeamTable from '../components/TeamTable';
 
 const query = gql`
   {
@@ -16,14 +13,15 @@ const query = gql`
       tag,
       wins,
       losses,
-      logo_url
+      logo_url,
+      last_match_time
     }
   }
 `;
 
-export default class extends React.Component<{}, IState> {
-  constructor(props: any) {
-    super(props);
+export default class extends React.Component<{}, { teams: Array<ITeam>; }> {
+  constructor({}) {
+    super({});
     this.state = {
       teams: [] as Array<ITeam>
     } 
@@ -36,14 +34,17 @@ export default class extends React.Component<{}, IState> {
 
   render() {
     return (
-      <ApolloConsumer>
+      <div>
+        <ApolloConsumer>
         {client => (
             <div>
               <button onClick={_ => this.onInitialiseApp(client)}>Initialise App</button>
             </div>
           )
         }
-      </ApolloConsumer>
+        </ApolloConsumer>
+        <TeamTable data={this.state.teams}/>
+      </div>
     );
   }
 }

@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { ApolloProvider } from "react-apollo";
 import ApolloClient from 'apollo-boost';
+import 'bootstrap/dist/css/bootstrap.css';
 
 import App from './containers/App';
 
