@@ -20,11 +20,11 @@ services:
   #   volumes:
   #     - /app/node_modules
   #     - ./src/client:/app
-  server:
-    build:
-      context: ./src/server
-    ports:
-      - "8888:4001"
-    volumes:
-      - /app/node_modules
-      - ./src/server:/server
+  # server:
+  #   build:
+  #     context: ./src/server
+  #   ports:
+  #     - "8888:4001"
+  #   volumes:
+  #     - /app/node_modules
+  #     - ./src/server:/server

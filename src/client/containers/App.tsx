@@ -1,10 +1,11 @@
 import * as React from 'react';
 import gql from 'graphql-tag';
-import { ApolloClient, InMemoryCache } from 'apollo-boost';
+import { ApolloClient } from 'apollo-boost';
 import { ApolloConsumer } from 'react-apollo';
 
 import { ITeam } from '../types';
 import TeamTable from '../components/TeamTable';
+import { insertTeams } from '../data/insertData';
 
 const query = gql`
   {
@@ -27,6 +28,7 @@ export default class extends React.Component<{}, { teams: Array<ITeam>; }> {
     } 
   }
   onInitialiseApp = async (client: ApolloClient<any>) => {
+    const x = await insertTeams();
     const response = await client.query({ query });
     console.log(response.data.dota2_team);
     this.setState({ teams: response.data.dota2_team });
