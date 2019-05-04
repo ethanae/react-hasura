@@ -52,16 +52,17 @@ export default class extends React.Component<{}, { teams: Array<ITeam>; teamInse
             (sub: any) => {
               if(sub.loading) return <div>Loading...</div>;
               if(sub.error) console.log(sub.error);
-              console.log(sub.data)
-              if(sub.data) {
-                this.setState({ teams: [...this.state.teams, sub.data] });
-                const length = sub.data.dota2_team.length;
-                return <div>New teams: {sub.data.dota2_team.slice(0, 2).map((t: any) => <span>{ t.team_name }, </span>)} and {length - 3} others</div>
-              }
+              const length = sub.data.dota2_team.length;
+              const teams = sub.data.dota2_team.sort((a: ITeam, b: ITeam) => b.rating - a.rating);
+              return (
+                <div>
+                  <div>New teams: {teams.slice(0, 2).map((t: any) => <span>{ t.team_name }, </span>)} and {length - 3} others</div>
+                  <TeamTable data={teams} />
+                </div>
+              )
             }
           }
         </Subscription>
-        <TeamTable data={this.state.teams} />
       </div>
     );
   }
