@@ -1,39 +1,22 @@
 import * as React from 'react';
-import gql from 'graphql-tag';
-import { ApolloClient } from 'apollo-boost';
 import { ApolloConsumer, Subscription } from 'react-apollo';
 
 import { ITeam } from '../types';
 import TeamTable from '../components/TeamTable';
-import { upsertTeams } from '../data/mutation';
+import { insertTeams } from '../data/mutation';
 import { teamSubscriber } from '../data/subscription';
+import { createToast } from '../utils';
 
-const query = gql`
-  {
-    dota2_team {
-      team_name,
-      tag,
-      rating,
-      wins,
-      losses,
-      logo_url,
-      last_match_time
-    }
-  }
-`;
-
-export default class extends React.Component<{}, { teams: Array<ITeam>; teamInserted: string; }> {
+export default class extends React.Component<{}, { teams: Array<ITeam>; }> {
   constructor({}) {
     super({});
     this.state = {
-      teams: [] as Array<ITeam>,
-      teamInserted: ''
+      teams: [] as Array<ITeam>
     } 
   }
-  onInitialiseApp = async (client: ApolloClient<any>) => {
-    const x = await upsertTeams();
-    const response = await client.query({ query });
-    this.setState({ teams: response.data.dota2_team });
+  onInitialiseApp = async () => {
+    const teamsNotice = await insertTeams();
+    createToast(teamsNotice);
   }
 
   render() {
@@ -42,7 +25,7 @@ export default class extends React.Component<{}, { teams: Array<ITeam>; teamInse
         <ApolloConsumer>
         {client => (
             <div>
-              <button onClick={_ => this.onInitialiseApp(client)}>Initialise App</button>
+              <button onClick={_ => this.onInitialiseApp()}>Initialise App</button>
             </div>
           )
         }
@@ -51,12 +34,13 @@ export default class extends React.Component<{}, { teams: Array<ITeam>; teamInse
           {
             (sub: any) => {
               if(sub.loading) return <div>Loading...</div>;
-              if(sub.error) console.log(sub.error);
-              const length = sub.data.dota2_team.length;
+              if(sub.error) { 
+                createToast({ message: 'There was an error creating the subscription.', type: 'error' });
+                return null;
+              }
               const teams = sub.data.dota2_team.sort((a: ITeam, b: ITeam) => b.rating - a.rating);
               return (
                 <div>
-                  <div>New teams: {teams.slice(0, 2).map((t: any) => <span>{ t.team_name }, </span>)} and {length - 3} others</div>
                   <TeamTable data={teams} />
                 </div>
               )

@@ -19,7 +19,7 @@ const httpLink = new HttpLink({
 });
 
 const webSocketLink = new WebSocketLink(
-  new SubscriptionClient(graphqlSocketUri, { 
+  new SubscriptionClient(graphqlSocketUri, {
     reconnect: true,
     connectionParams: { headers: hasuraReqHeaders }
   }

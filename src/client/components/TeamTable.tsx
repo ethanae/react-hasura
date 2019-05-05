@@ -7,8 +7,12 @@ export interface IProps {
 }
 
 export default (props: IProps) => {
+  if(!props.data.length) {
+    return <div>No teams found. The database is probably empty. ¯\_(ツ)_/¯</div>
+  }
+  
   return (
-    <table className="table table-dark">
+    <table className="table table-dark table-striped">
       <thead>
         <tr>
           <th></th>

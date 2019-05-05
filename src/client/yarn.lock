@@ -4256,6 +4256,13 @@ react-is@^16.7.0, react-is@^16.8.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
   integrity sha512-aUk3bHfZ2bRSVFFbbeVS4i+lNPZr3/WM5jT2J5omUVV1zzcs1nAaf3l51ctA5FFvCRbhrH0bdAsRRQddFJZPtA==
 
+react-toasts@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/react-toasts/-/react-toasts-3.0.3.tgz#7ec7f5a61550852894130635df66a98d7a87e864"
+  integrity sha512-af85o0jS05A1SuurACOnBSRlLf2krPeXMPXL/67qnB1PjoMI8QjKXdGcxkELeNw1DMp8LVvxqdGnP5jiueTlEg==
+  dependencies:
+    watchable-stores "^2.0.2"
+
 react@^16.8.6:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react/-/react-16.8.6.tgz#ad6c3a9614fd3a4e9ef51117f54d888da01f2bbe"
@@ -5196,6 +5203,11 @@ vm-browserify@0.0.4:
   integrity sha1-XX6kW7755Kb/ZflUOOCofDV9WnM=
   dependencies:
     indexof "0.0.1"
+
+watchable-stores@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/watchable-stores/-/watchable-stores-2.0.2.tgz#38c03b73019e704d5f4741541b0dfbe9169c86bb"
+  integrity sha512-xKzypK+hG6gaZFcmiEvdazbD9Z8+hIlr+frC7Ne4N4LI0zvuPaT5uPrhn2RMxhiwaLVw70rctes+rPUTvwhPNg==
 
 watchpack@^1.5.0:
   version "1.6.0"

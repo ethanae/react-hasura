@@ -9,3 +9,16 @@ export interface ITeam {
   tag: string;
   logo_url: string;
 }
+
+export interface IDota2TeamAggregate {
+  dota2_team_aggregate: {
+    aggregate: {
+      count: number;
+    }
+  };
+}
+
+export type Notice = {
+  message: string;
+  type: 'info' | 'success' | 'error';
+};
