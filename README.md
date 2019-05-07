@@ -6,3 +6,4 @@
 
 Runs the app in the development.
 Open [http://localhost:1337](http://localhost:1337) to view the Hasura console.
+Open [http://localhost:9000](http://localhost:9000) to view the React app.
