@@ -6,7 +6,10 @@
     "module": "es2015",
     "jsx": "react",
     "moduleResolution": "node",
-    "sourceMap": true
+    "sourceMap": true,
+    "types": [
+      "react"
+    ],
   },
   "include": [
     "./**/*"

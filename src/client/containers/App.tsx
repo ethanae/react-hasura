@@ -19,9 +19,7 @@ export default class extends React.Component<{}, { teams: Array<ITeam>; }> {
   render() {
     return (
       <div className="container-fluid">
-        
         Thuis
-        
       </div>
     );
   }
