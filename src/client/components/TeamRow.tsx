@@ -10,7 +10,7 @@ export default (props: IProps) => {
   const { team } = props;
   return (
     <tr key={team.id}>
-      <td><img src={team.logo_url} className="img-fluid" alt="" width="50" height="50"/></td>
+      <td><img src='' className="img-fluid" alt="" width="50" height="50"/></td>
       <td>{team.team_name || team.tag}</td>
       <td>{team.wins}</td>
       <td>{team.losses}</td>
