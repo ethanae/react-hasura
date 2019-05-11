@@ -18,6 +18,14 @@ export interface IDota2TeamAggregate {
   };
 }
 
+export interface IDota2PlayerAggregate {
+  dota2_player_aggregate: {
+    aggregate: {
+      count: number;
+    }
+  };
+}
+
 export type Notice = {
   message: string;
   type: 'info' | 'success' | 'error';

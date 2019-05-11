@@ -21,7 +21,7 @@ CREATE TABLE "dota2".player (
   profile_url TEXT,
   persona_name TEXT,
   cheese INTEGER,
-  last_match_time INTEGER,
+  last_match_time TEXT,
   player_name TEXT NOT NULL,
   country_code TEXT,
   fantasy_role INTEGER,

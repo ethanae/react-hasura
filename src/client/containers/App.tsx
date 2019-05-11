@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { ITeam } from '../types';
-import { insertTeams } from '../data/mutation';
+import { insertTeams, insertPlayers } from '../data/mutation';
 import { createToast } from '../utils';
 
 export default class extends React.Component<{}, { teams: Array<ITeam>; }> {
@@ -14,12 +14,18 @@ export default class extends React.Component<{}, { teams: Array<ITeam>; }> {
   onInitialiseApp = async () => {
     const teamsNotice = await insertTeams();
     createToast(teamsNotice);
+    const playersNotice = await insertPlayers();
+    createToast(playersNotice);
   }
 
   render() {
     return (
       <div className="container-fluid">
-        Thuis
+        <div>
+          <button className="btn btn-lg btn-success" onClick={this.onInitialiseApp}>
+            Initialise
+          </button>
+        </div>
       </div>
     );
   }

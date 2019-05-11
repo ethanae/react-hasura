@@ -11,9 +11,7 @@ export default () => {
     <Subscription subscription={teamSubscriber}>
       {
         (sub: any) => {
-          if (sub.loading) return (
-            <RotateSpinner />
-          );
+          if (sub.loading) return <RotateSpinner />;
           if (sub.error) {
             createToast({ message: 'There was an error creating the subscription.', type: 'error' });
             return null;

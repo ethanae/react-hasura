@@ -23,3 +23,13 @@ export const countTeams = gql`
     }
   }
 `;
+
+export const countPlayers = gql`
+  {
+    dota2_player_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+`;

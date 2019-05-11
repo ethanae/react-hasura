@@ -13,7 +13,7 @@ export default () => {
             <img 
               className="img-fluid" 
               width="50" height="50"
-              src="https://i.pinimg.com/originals/2d/cd/80/2dcd80c6f5a21a437313adde93b373d8.png" alt="" />
+              src="https://png.pngtree.com/svg/20161009/c24277a29e.png" alt="Dota 2" />
           </Link>
           <Link className="btn btn-link" to='/teams'>Teams</Link>
           <Link className="btn btn-link" to='/players'>Players</Link>
