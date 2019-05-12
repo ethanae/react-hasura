@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ITeam } from '../types';
 import TeamRow from './TeamRow';
+import { withRouter, Route } from 'react-router-dom'
 
 export interface IProps {
   data: Array<ITeam>;
@@ -23,7 +24,14 @@ export default (props: IProps) => {
         </tr>
       </thead>
       <tbody>
-        { props.data.map(t => <TeamRow team={t} key={t.id} />) }
+        { 
+          props.data.map(t => {
+            const Team = withRouter(({ history }) => {
+              return <TeamRow team={t} key={t.id} onTeamClick={() => history.push('/players')}/>;
+            });
+            return <Team />;
+          })
+        }
       </tbody>
     </table>
   );

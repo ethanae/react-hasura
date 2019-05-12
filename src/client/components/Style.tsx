@@ -25,3 +25,10 @@ export const glow = keyframes`
 export const Glow = styled.div`
   animation: ${glow} 1s infinite alternate;
 `;
+
+export const RowHover = styled.tr`
+  cursor: pointer;
+  &:hover {
+    color: #00ff89
+  };
+`;
