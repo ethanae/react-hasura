@@ -1,4 +1,6 @@
 import gql from 'graphql-tag';
+import { client } from './apollo';
+import { IPlayer } from '../types';
 
 export const queryTeams = gql`
   {
@@ -33,3 +35,29 @@ export const countPlayers = gql`
     }
   }
 `;
+
+export const queryPlayersByTeamId = gql`
+  query dota2_player($teamId: Int!) {
+    dota2_player (where: { team_id: { _eq: $teamId } }) {
+      avatar
+      account_id
+      country_code
+      last_match_time
+      player_name
+    }
+  }
+`;
+
+export async function getPlayersByTeamId(teamId: number) {
+  const players = await client.query<{ dota2_player: Array<IPlayer> }>({
+    query: queryPlayersByTeamId,
+    variables: {
+      teamId
+    }
+  }).catch(err => {
+    console.log(err);
+    throw err;
+  });
+
+  return players.data.dota2_player;
+}

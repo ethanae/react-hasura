@@ -27,7 +27,7 @@ export default (props: IProps) => {
         { 
           props.data.map(t => {
             const Team = withRouter(({ history }) => {
-              return <TeamRow team={t} key={t.id} onTeamClick={() => history.push('/players')}/>;
+              return <TeamRow team={t} key={t.id} onTeamClick={() => history.push('/players', { teamId: t.team_id })}/>;
             });
             return <Team />;
           })

@@ -26,6 +26,14 @@ export interface IDota2PlayerAggregate {
   };
 }
 
+export interface IPlayer {
+  account_id: number;
+  avatar: string;
+  player_name: string;
+  country_code: string;
+  last_match_time: string;
+}
+
 export type Notice = {
   message: string;
   type: 'info' | 'success' | 'error';
