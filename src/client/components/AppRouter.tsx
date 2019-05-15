@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Teams from './Teams';
 import Players from './Players';
 import App from '../containers/App';
-import { AppWrapper } from './Style';
+
 export default () => {
   return (
     <Router>
