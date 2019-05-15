@@ -28,7 +28,7 @@ export interface IDota2PlayerAggregate {
 
 export interface IPlayer {
   account_id: number;
-  avatar: string;
+  avatar_full: string;
   player_name: string;
   country_code: string;
   last_match_time: string;

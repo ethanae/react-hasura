@@ -16,6 +16,7 @@
     "react": "^16.8.6",
     "react-apollo": "^2.5.4",
     "react-dom": "^16.8.6",
+    "react-progressive-image": "^0.6.0",
     "react-router-dom": "^5.0.0",
     "react-spinners-kit": "^1.9.0",
     "react-toasts": "^3.0.3",

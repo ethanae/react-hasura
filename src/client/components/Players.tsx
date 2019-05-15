@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { IPlayer } from '../types';
 import { getPlayersByTeamId } from '../data/query';
+import PlayerCard from './PlayerCard';
 
 export interface IProps {
   location?: {
@@ -31,15 +32,11 @@ export default class extends React.Component<IProps, { players: IPlayer[] }> {
   render() {
     const players = this.state.players;
     return (
-      <div>
+      <div className="container">
         <h1>Players</h1>
-        <div>
+        <div className="justify-content-center row">
           {
-            players.length ? players.map(p => (
-              <div key={p.account_id}>
-                {p.player_name}
-              </div>
-            ))
+            players.length ? players.map(p => <PlayerCard key={p.account_id} player={p} />)
             :
             'no players'
           }

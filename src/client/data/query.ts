@@ -39,7 +39,7 @@ export const countPlayers = gql`
 export const queryPlayersByTeamId = gql`
   query dota2_player($teamId: Int!) {
     dota2_player (where: { team_id: { _eq: $teamId } }) {
-      avatar
+      avatar_full
       account_id
       country_code
       last_match_time

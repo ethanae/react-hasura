@@ -4,14 +4,15 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Teams from './Teams';
 import Players from './Players';
 import App from '../containers/App';
+import { AppWrapper } from './Style';
 export default () => {
   return (
     <Router>
       <div>
         <nav>
           <Link className="btn btn-link" to='/'>
-            <img 
-              className="img-fluid" 
+            <img
+              className="img-fluid"
               width="50" height="50"
               src="https://png.pngtree.com/svg/20161009/c24277a29e.png" alt="Dota 2" />
           </Link>

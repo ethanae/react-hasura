@@ -32,3 +32,8 @@ export const RowHover = styled.tr`
     color: #00ff89
   };
 `;
+
+export const PlayerWrapper = styled.div`
+  color: #00ff89;
+  background-color: #282828;
+`;
