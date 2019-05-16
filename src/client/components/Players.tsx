@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { IPlayer } from '../types';
-import { getPlayersByTeamId } from '../data/query';
+import { queryPlayersByTeamId } from '../data/query';
 import PlayerCard from './PlayerCard';
+import { Query } from 'react-apollo';
+import { RotateSpinner } from 'react-spinners-kit';
 
 export interface IProps {
   location?: {
@@ -11,37 +13,30 @@ export interface IProps {
   }
 }
 
-export default class extends React.Component<IProps, { players: IPlayer[] }> {
-  constructor(props: IProps) {
-    super(props);
-    this.state = {
-      players: []
-    }
-  }
-
-  componentDidMount() {
-    if(!this.props.location || !this.props.location.state) return;
-
-    getPlayersByTeamId(this.props.location.state.teamId)
-      .then(players => this.setState({ players }))
-      .catch(err => {
-        throw err;
-      });
-  }
-
-  render() {
-    const players = this.state.players;
-    return (
-      <div className="container">
-        <h1>Players</h1>
-        <div className="justify-content-center row">
-          {
-            players.length ? players.map(p => <PlayerCard key={p.account_id} player={p} />)
-            :
-            'no players'
-          }
-        </div>
+export default (props: IProps) => {
+  return (
+    <div className="container">
+      <h1>Players</h1>
+      <div className="justify-content-center row">
+        {
+          props.location && props.location.state && props.location.state.teamId ?
+            <Query<IDota2Player, { teamId: number }> query={queryPlayersByTeamId} variables={{ teamId: props.location.state.teamId }}>
+              {
+                ({ data, error, loading }) => {
+                  if (error) return <p>Error loading players</p>;
+                  if (loading) return <RotateSpinner />;
+                  if (!data || !data.dota2_player.length) return <p>No players found</p>
+                  return data.dota2_player.map(p => <PlayerCard key={p.account_id} player={p} />);
+                }
+              }
+            </Query>
+            : <p>Swiggity</p>
+        }
       </div>
-    );
-  }
+    </div>
+  );
+}
+
+export interface IDota2Player {
+  dota2_player: IPlayer[];
 }

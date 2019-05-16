@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ITeam } from '../types';
 import TeamRow from './TeamRow';
-import { withRouter, Route } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 export interface IProps {
   data: Array<ITeam>;
