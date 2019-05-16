@@ -16,4 +16,4 @@ Hasura may fail to connect to the PostgreSQL server, if that happens, running `d
 3. Select the `dota_2` schema from the dropdown
 4. Next to the _Untracked tables or views_ heading click _Track all_
 
-That should do it.
+That should do it; everything should be communicating now.
