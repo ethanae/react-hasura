@@ -6,3 +6,14 @@
 
 * Hasura console - [http://localhost:1337](http://localhost:1337).
 * React app - [http://localhost:9000](http://localhost:9000).
+
+Hasura may fail to connect to the PostgreSQL server, if that happens, running `docker-compose up` usually works.
+
+**Note**: every brand new Hasura container instance with need some assistance; you need to tell it to track all the tables it found in the PostgreSQL schema. To do so:
+
+1. Open the Hasura console: [http://localhost:1337](http://localhost:1337).
+2. Navigate to the `Data` tab
+3. Select the `dota_2` schema from the dropdown
+4. Next to the _Untracked tables or views_ heading click _Track all_
+
+That should do it.
