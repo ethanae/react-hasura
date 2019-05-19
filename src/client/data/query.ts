@@ -48,30 +48,22 @@ export const queryPlayersByTeamId = gql`
   }
 `;
 
-export const queryPlayersPaged = gql`
-  query dota2_player($offset: Int, $limit: Int) {
-    dota2_player(offset: $offset, limit: $limit) {
-      account_id
-      avatar_full
-      last_match_time
-      player_name
-      team_id
-      country_code
+export const queryPlayersPaged = (offset: number, limit: number) => {
+  return gql`
+    query {
+      dota2_player(offset: ${offset}, limit: ${limit}) {
+        account_id
+        avatar_full
+        last_match_time
+        player_name
+        team_id
+        country_code
+      }
+      dota2_player_aggregate {
+        aggregate {
+          count
+        }
+      }
     }
-  }
-`;
-
-
-export async function getPlayersByTeamId(teamId: number) {
-  const players = await client.query<{ dota2_player: Array<IPlayer> }>({
-    query: queryPlayersByTeamId,
-    variables: {
-      teamId
-    }
-  }).catch(err => {
-    console.log(err);
-    throw err;
-  });
-
-  return players.data.dota2_player;
+  `;
 }

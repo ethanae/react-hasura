@@ -4,11 +4,11 @@ import TeamRow from './TeamRow';
 import { withRouter } from 'react-router-dom'
 
 export interface IProps {
-  data: Array<ITeam>;
+  teams: Array<ITeam>;
 }
 
 export default (props: IProps) => {
-  if(!props.data.length) {
+  if(!props.teams.length) {
     return <div>No teams found. The database is probably empty. ¯\_(ツ)_/¯</div>
   }
   
@@ -25,7 +25,7 @@ export default (props: IProps) => {
       </thead>
       <tbody>
         { 
-          props.data.map(t => {
+          props.teams.map(t => {
             const Team = withRouter(({ history }) => {
               return <TeamRow team={t} key={t.id} onTeamClick={() => history.push('/players', { teamId: t.team_id })}/>;
             });

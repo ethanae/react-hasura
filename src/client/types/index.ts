@@ -10,6 +10,10 @@ export interface ITeam {
   logo_url: string;
 }
 
+export interface IDota2TeamQueryResponse {
+  dota2_team: Array<ITeam>;
+}
+
 export interface IDota2TeamAggregateResponse {
   dota2_team_aggregate: {
     aggregate: {
