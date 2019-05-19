@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 import Teams from './Teams';
 import Players from './Players';
-import App from '../containers/App';
+import Home from '../containers/Home';
 
 export default () => {
   return (
@@ -22,7 +22,7 @@ export default () => {
           <Link className="btn btn-link" to='/stats'>Stats</Link>
         </nav>
 
-        <Route className="btn btn-link" path="/" exact component={App} />
+        <Route className="btn btn-link" path="/" exact component={Home} />
         <Route className="btn btn-link" path="/teams" component={Teams} />
         <Route className="btn btn-link" path="/players" component={Players} />
       </div>
