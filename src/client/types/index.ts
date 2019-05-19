@@ -10,7 +10,7 @@ export interface ITeam {
   logo_url: string;
 }
 
-export interface IDota2TeamAggregate {
+export interface IDota2TeamAggregateResponse {
   dota2_team_aggregate: {
     aggregate: {
       count: number;
@@ -18,7 +18,7 @@ export interface IDota2TeamAggregate {
   };
 }
 
-export interface IDota2PlayerAggregate {
+export interface IDota2PlayerAggregateResponse {
   dota2_player_aggregate: {
     aggregate: {
       count: number;
@@ -32,6 +32,11 @@ export interface IPlayer {
   player_name: string;
   country_code: string;
   last_match_time: string;
+}
+
+
+export interface IDota2PlayerQueryResponse {
+  dota2_player: IPlayer[];
 }
 
 export type Notice = {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IPlayer } from '../types';
+import { IDota2PlayerQueryResponse } from '../types';
 import { queryPlayersByTeamId } from '../data/query';
 import PlayerCard from './PlayerCard';
 import { Query } from 'react-apollo';
@@ -20,7 +20,7 @@ export default (props: IProps) => {
       <div className="justify-content-center row">
         {
           props.location && props.location.state && props.location.state.teamId ?
-            <Query<IDota2Player, { teamId: number }> query={queryPlayersByTeamId} variables={{ teamId: props.location.state.teamId }}>
+            <Query<IDota2PlayerQueryResponse, { teamId: number }> query={queryPlayersByTeamId} variables={{ teamId: props.location.state.teamId }}>
               {
                 ({ data, error, loading }) => {
                   if (error) return <p>Error loading players</p>;
@@ -35,8 +35,4 @@ export default (props: IProps) => {
       </div>
     </div>
   );
-}
-
-export interface IDota2Player {
-  dota2_player: IPlayer[];
 }

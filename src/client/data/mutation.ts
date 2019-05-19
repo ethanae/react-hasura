@@ -1,7 +1,7 @@
 import { client } from './apollo';
 import gql from 'graphql-tag';
 import { countTeams, countPlayers } from './query';
-import { IDota2TeamAggregate, Notice, IDota2PlayerAggregate } from '../types';
+import { IDota2TeamAggregateResponse, Notice, IDota2PlayerAggregateResponse } from '../types';
 
 const apiBaseUrl = 'https://api.opendota.com/api';
 
@@ -26,7 +26,7 @@ export const insertPlayersMutation = gql`
 `;
 
 export async function insertTeams(): Promise<Notice> {
-  const { data: { dota2_team_aggregate: { aggregate: { count } } } } = await client.query<IDota2TeamAggregate>({ query: countTeams });
+  const { data: { dota2_team_aggregate: { aggregate: { count } } } } = await client.query<IDota2TeamAggregateResponse>({ query: countTeams });
   if (count > 0) {
     return {
       message: 'Team data already exists ¯\\_(ツ)_/¯',
@@ -54,7 +54,7 @@ export async function insertTeams(): Promise<Notice> {
 }
 
 export async function insertPlayers(): Promise<Notice> {
-  const { data: { dota2_player_aggregate: { aggregate: { count } } } } = await client.query<IDota2PlayerAggregate>({ query: countPlayers });
+  const { data: { dota2_player_aggregate: { aggregate: { count } } } } = await client.query<IDota2PlayerAggregateResponse>({ query: countPlayers });
   if (count > 0) {
     return {
       message: 'Player data already exists',
