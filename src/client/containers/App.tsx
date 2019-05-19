@@ -5,8 +5,8 @@ import { insertTeams, insertPlayers } from '../data/mutation';
 import { createToast } from '../utils';
 
 export default class extends React.Component<{}, { teams: Array<ITeam>; }> {
-  constructor({}) {
-    super({});
+  constructor(props: {}) {
+    super(props);
     this.state = {
       teams: [] as Array<ITeam>
     } 

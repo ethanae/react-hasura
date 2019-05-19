@@ -16,7 +16,6 @@ export interface IProps {
 }
 
 export default class extends React.Component<IProps, { offset: number; limit: number; currentPage: number; }> {
-
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -29,7 +28,6 @@ export default class extends React.Component<IProps, { offset: number; limit: nu
 
   onNextPage = () => {
     const { offset, limit, currentPage } = this.state;
-
     this.setState({ offset: offset + limit, limit, currentPage: currentPage + 1 });
   }
 
