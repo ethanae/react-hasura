@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IDota2PlayerQueryResponse } from '../types';
-import { queryPlayersByTeamId } from '../data/query';
+import { queryPlayersByTeamId, queryPlayersPaged } from '../data/query';
 import PlayerCard from './PlayerCard';
 import { Query } from 'react-apollo';
 import { RotateSpinner } from 'react-spinners-kit';
@@ -30,7 +30,17 @@ export default (props: IProps) => {
                 }
               }
             </Query>
-            : <p>Swiggity</p>
+            : 
+            <Query<IDota2PlayerQueryResponse> query={queryPlayersPaged} variables={ { limit: 10, offset: 10 } }>
+              {
+                ({ data, error, loading }) => {
+                  if (error) return <p>Error loading players</p>;
+                  if (loading) return <RotateSpinner />;
+                  if (!data || !data.dota2_player.length) return <p>No players found</p>
+                  return data.dota2_player.map(p => <PlayerCard key={p.account_id} player={p} />);
+                }
+              }
+            </Query>
         }
       </div>
     </div>
