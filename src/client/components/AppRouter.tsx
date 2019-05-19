@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 import Teams from './Teams';
 import Players from './Players';
-import Home from '../containers/Home';
+import Home from './Home';
 
 export default () => {
   return (
