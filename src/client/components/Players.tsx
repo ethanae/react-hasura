@@ -4,6 +4,7 @@ import { queryPlayersByTeamId, queryPlayersPaged } from '../data/query';
 import PlayerCard from './PlayerCard';
 import { Query } from 'react-apollo';
 import { RotateSpinner } from 'react-spinners-kit';
+import PlayerTable from './PlayerTable';
 
 export interface IProps {
   location?: {
@@ -37,7 +38,7 @@ export default (props: IProps) => {
                   if (error) return <p>Error loading players</p>;
                   if (loading) return <RotateSpinner />;
                   if (!data || !data.dota2_player.length) return <p>No players found</p>
-                  return data.dota2_player.map(p => <PlayerCard key={p.account_id} player={p} />);
+                  return <PlayerTable data={data.dota2_player} />;
                 }
               }
             </Query>
