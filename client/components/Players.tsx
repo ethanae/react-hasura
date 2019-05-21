@@ -43,6 +43,8 @@ export default class extends React.Component<IProps, { offset: number; limit: nu
         <h1>Players</h1>
         <div className="justify-content-center row">
           {
+            // split these 2 properly
+            // problem occurs when already viewing player cards and clicking players link
             this.props.location && this.props.location.state && this.props.location.state.teamId ?
               <Query<IDota2PlayerQueryResponse, { teamId: number }>
                 query={queryPlayersByTeamId}
