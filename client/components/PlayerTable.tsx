@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { IPlayer } from '../types';
+import { IPlayerNestedTeam } from '../types';
 import { RowHover } from './Style';
 import * as moment from 'moment';
 
 export interface IProps {
-  players: Array<IPlayer>;
+  players: Array<IPlayerNestedTeam>;
 }
 
 export default (props: IProps) => {
@@ -32,7 +32,7 @@ export default (props: IProps) => {
                 <td><img src={p.avatar_full} className="img-fluid" alt="" width="50" height="50"/></td>
                 <td>{p.player_name}</td>
                 <td>{p.country_code}</td>
-                <td>{p.team_name}</td>
+                <td>{p.team.team_name}</td>
                 <td>{moment(p.last_match_time).format('D MMM YYYY')}</td>
               </RowHover>
             )

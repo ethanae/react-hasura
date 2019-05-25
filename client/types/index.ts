@@ -36,12 +36,22 @@ export interface IPlayer {
   player_name: string;
   country_code: string;
   last_match_time: string;
-  team_name: string;
 }
 
+export interface IPlayerTeamQueryNestedResponse {
+  team: {
+    team_name: string;
+  }
+}
+
+export interface IPlayerNestedTeam extends IPlayer, IPlayerTeamQueryNestedResponse { }
 
 export interface IDota2PlayerQueryResponse {
   dota2_player: IPlayer[];
+}
+
+export interface IDota2PlayerTeamNestedQueryResponse {
+  dota2_player: IPlayerNestedTeam[];
 }
 
 export type Notice = {

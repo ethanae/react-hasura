@@ -25,7 +25,7 @@ CREATE TABLE "dota2".player (
   player_name TEXT NOT NULL,
   country_code TEXT,
   fantasy_role INTEGER,
-  team_id INTEGER REFERENCES "dota2".team(team_id),
+  team_id INTEGER REFERENCES "dota2".team(team_id) NOT NULL,
   is_locked BOOLEAN,
   is_pro BOOLEAN
 );

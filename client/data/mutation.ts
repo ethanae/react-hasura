@@ -63,7 +63,11 @@ export async function insertPlayers(): Promise<Notice> {
   }
 
   const players = await (await fetch(apiBaseUrl + '/proPlayers')).json();
-  const preparedPlayers = players.map((p: any) => {
+  const teams = await (await fetch(apiBaseUrl + '/teams')).json();
+  const teamIDs = teams.map((t: any) => t.team_id);
+  console.log({ teamIDs });
+  console.log(players.filter((p: any) => p.team_id && teamIDs.includes(p.team_id)));
+  const preparedPlayers = players.filter((p: any) => p.team_id && teamIDs.includes(p.team_id)).map((p: any) => {
     return {
       account_id: p.account_id,
       steam_id: p.steamid,
@@ -83,15 +87,15 @@ export async function insertPlayers(): Promise<Notice> {
     };
   });
 
+  // console.log({ preparedPlayers: preparedPlayers.slice(27, 30) });
   const result = await client.mutate({ 
     mutation: insertPlayersMutation,
     variables: {
       objects: preparedPlayers
     }
   });
-  console.log({ result });
   return {
-    message: `Adding players ${players.length}...`,
+    message: `Adding players ${preparedPlayers.length}...`,
     type: 'success'
   }
 } 

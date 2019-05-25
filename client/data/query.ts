@@ -56,7 +56,7 @@ export const queryPlayersPaged = (offset: number, limit: number) => {
         player_name
         team_id
         country_code
-        dota2_team {
+        team {
           team_name  
         }
       }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IDota2PlayerQueryResponse, IDota2PlayerAggregateResponse } from '../types';
+import { IDota2PlayerQueryResponse, IDota2PlayerAggregateResponse, IDota2PlayerTeamNestedQueryResponse } from '../types';
 import { queryPlayersByTeamId, queryPlayersPaged } from '../data/query';
 import PlayerCard from './PlayerCard';
 import { Query } from 'react-apollo';
@@ -59,7 +59,7 @@ export default class extends React.Component<IProps, { offset: number; limit: nu
                 }
               </Query>
               :
-              <Query<IDota2PlayerQueryResponse & IDota2PlayerAggregateResponse>
+              <Query<IDota2PlayerTeamNestedQueryResponse & IDota2PlayerAggregateResponse>
                 query={queryPlayersPaged(this.state.offset, this.state.limit)}>
                 {
                   ({ data, error, loading }) => {
