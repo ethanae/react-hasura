@@ -1,7 +1,7 @@
 import { client } from './apollo';
 import gql from 'graphql-tag';
-import { countTeams, countPlayers } from './query';
-import { IDota2TeamAggregateResponse, Notice, IDota2PlayerAggregateResponse } from '../types';
+import { countTeams, countPlayers, queryTeamIDs } from './query';
+import { IDota2TeamAggregateResponse, Notice, IDota2PlayerAggregateResponse, ITeamIDQueryResponse } from '../types';
 
 const apiBaseUrl = 'https://api.opendota.com/api';
 
@@ -54,8 +54,8 @@ export async function insertTeams(): Promise<Notice> {
 }
 
 export async function insertPlayers(): Promise<Notice> {
-  const { data: { dota2_player_aggregate: { aggregate: { count } } } } = await client.query<IDota2PlayerAggregateResponse>({ query: countPlayers });
-  if (count > 0) {
+  const { data: { dota2_player_aggregate: { aggregate } } } = await client.query<IDota2PlayerAggregateResponse>({ query: countPlayers });
+  if (aggregate.count > 0) {
     return {
       message: 'Player data already exists',
       type: 'info'
@@ -63,10 +63,9 @@ export async function insertPlayers(): Promise<Notice> {
   }
 
   const players = await (await fetch(apiBaseUrl + '/proPlayers')).json();
-  const teams = await (await fetch(apiBaseUrl + '/teams')).json();
-  const teamIDs = teams.map((t: any) => t.team_id);
-  console.log({ teamIDs });
-  console.log(players.filter((p: any) => p.team_id && teamIDs.includes(p.team_id)));
+  
+  const { data: { dota2_team } } = await client.query<ITeamIDQueryResponse>({ query: queryTeamIDs })
+  const teamIDs = dota2_team.map(t => t.team_id);
   const preparedPlayers = players.filter((p: any) => p.team_id && teamIDs.includes(p.team_id)).map((p: any) => {
     return {
       account_id: p.account_id,
@@ -87,15 +86,15 @@ export async function insertPlayers(): Promise<Notice> {
     };
   });
 
-  // console.log({ preparedPlayers: preparedPlayers.slice(27, 30) });
   const result = await client.mutate({ 
     mutation: insertPlayersMutation,
     variables: {
       objects: preparedPlayers
     }
   });
+  
   return {
-    message: `Adding players ${preparedPlayers.length}...`,
+    message: `Added ${result.data.insert_dota2_player.returning.length} players`,
     type: 'success'
   }
 } 

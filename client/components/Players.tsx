@@ -6,6 +6,7 @@ import { Query } from 'react-apollo';
 import { RotateSpinner } from 'react-spinners-kit';
 import PlayerTable from './PlayerTable';
 import Paginate from './Paginate';
+import { createToast } from '../utils';
 
 export interface IProps {
   location?: {
@@ -63,7 +64,10 @@ export default class extends React.Component<IProps, { offset: number; limit: nu
                 query={queryPlayersPaged(this.state.offset, this.state.limit)}>
                 {
                   ({ data, error, loading }) => {
-                    if (error) return <p>Error loading players</p>;
+                    if (error) {
+                      createToast({ message: 'There was an error fetching players.', type: 'error' });
+                      return null;
+                    }
                     if (loading) return <RotateSpinner />;
                     if (!data || !data.dota2_player.length) return <p>No players found</p>
                     return (

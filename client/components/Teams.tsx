@@ -41,7 +41,7 @@ export default class extends React.Component<{}, { offset: number; limit: number
               ({ data, error, loading }) => {
                 if (loading) return <RotateSpinner />;
                 if (error) {
-                  createToast({ message: 'There was an error creating the subscription.', type: 'error' });
+                  createToast({ message: 'There was an error fetching teams.', type: 'error' });
                   return null;
                 }
                 if (!data || !data.dota2_team.length) {

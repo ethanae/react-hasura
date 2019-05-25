@@ -1,5 +1,13 @@
 import gql from 'graphql-tag';
 
+export const queryTeamIDs = gql`
+  {
+    dota2_team {
+      team_id
+    }
+  }
+`;
+
 export const queryTeams = gql`
   {
     dota2_team {
