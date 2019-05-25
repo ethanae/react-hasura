@@ -5,12 +5,13 @@ import Teams from './Teams';
 import Players from './Players';
 import Home from './Home';
 import Team from './Team';
+import { Nav } from './Style';
 
 export default () => {
   return (
     <Router>
       <div>
-        <nav>
+        <Nav>
           <Link className="btn btn-link" to='/'>
             <img
               className="img-fluid"
@@ -21,12 +22,12 @@ export default () => {
           <Link className="btn btn-link" to='/players'>Players</Link>
           <Link className="btn btn-link" to='/heroes'>Heroes</Link>
           <Link className="btn btn-link" to='/stats'>Stats</Link>
-        </nav>
+        </Nav>
 
-        <Route className="btn btn-link" path="/" exact component={Home} />
-        <Route className="btn btn-link" path="/teams/:teamName" component={Team} />
-        <Route className="btn btn-link" path="/teams" component={Teams} />
-        <Route className="btn btn-link" path="/players" component={Players} />
+        <Route path="/" exact component={Home} />
+        <Route path="/teams/:teamName" component={Team} />
+        <Route exact path="/teams" component={Teams} />
+        <Route path="/players" component={Players} />
       </div>
     </Router>
   )

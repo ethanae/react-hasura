@@ -37,3 +37,12 @@ export const PlayerWrapper = styled.div`
   color: #00ff89;
   background-color: #282828;
 `;
+
+export const Nav = styled.nav`
+  a {
+    color: #00ff89
+    &:hover {
+      color: #00ff89
+    }
+  }
+`;

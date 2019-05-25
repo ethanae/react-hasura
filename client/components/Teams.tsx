@@ -32,9 +32,9 @@ export default class extends React.Component<{}, { offset: number; limit: number
 
   render() {
     return (
-      <div className="container-fluid">
-        <h1>Teams</h1>
-        <div className="justify-content-center row">
+      <div className="container">
+        <h1 className="text-light">Teams</h1>
+        <div className="justify-content-center">
           <Query<IDota2TeamQueryResponse & IDota2TeamAggregateResponse> 
             query={queryTeamsPaged(this.state.offset, this.state.limit)}>
             {

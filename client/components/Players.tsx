@@ -39,9 +39,9 @@ export default class extends React.Component<IProps, { offset: number; limit: nu
 
   render() {
     return (
-      <div className="container-fluid">
-        <h1>Players</h1>
-        <div className="justify-content-center row">
+      <div className="container">
+        <h1 className="text-light">Players</h1>
+        <div className="justify-content-center">
           {
             // split these 2 properly
             // problem occurs when already viewing player cards and clicking players link
