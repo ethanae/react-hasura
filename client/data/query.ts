@@ -67,3 +67,24 @@ export const queryPlayersPaged = (offset: number, limit: number) => {
     }
   `;
 }
+
+export const queryTeamsPaged = (offset: number, limit: number) => {
+  return gql`
+    query {
+      dota2_team(offset: ${offset}, limit: ${limit}) {
+        team_name,
+        tag,
+        rating,
+        wins,
+        losses,
+        logo_url,
+        last_match_time
+      }
+      dota2_team_aggregate {
+        aggregate {
+          count
+        }
+      }
+    }
+  `;
+}
