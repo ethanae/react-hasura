@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { ITeam } from '../types';
-import TeamRow from './TeamRow';
 import { withRouter } from 'react-router-dom'
+import { RowHover } from './Style';
+import * as moment from 'moment';
 
 export interface IProps {
   teams: Array<ITeam>;
@@ -26,9 +27,15 @@ export default (props: IProps) => {
       <tbody>
         { 
           props.teams.map(t => {
-            const Team = withRouter(({ history }) => {
-              return <TeamRow team={t} key={t.id} onTeamClick={() => history.push('/players', { teamId: t.team_id })}/>;
-            });
+            const Team = withRouter(({ history }) => (
+              <RowHover key={t.id} onClick={() => history.push('/players', { teamId: t.team_id })}>
+                <td><img src='' className="img-fluid" alt="" width="50" height="50"/></td>
+                <td>{t.team_name || t.tag}</td>
+                <td>{t.wins}</td>
+                <td>{t.losses}</td>
+                <td>{moment(t.last_match_time * 1000).format('D MMM YYYY')}</td>
+              </RowHover>
+            ));
             return <Team />;
           })
         }

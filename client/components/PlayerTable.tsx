@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { IPlayer } from '../types';
-import PlayerRow from './PlayerRow';
-import Paginate from './Paginate';
-// import { withRouter } from 'react-router-dom'
+import { RowHover } from './Style';
+import * as moment from 'moment';
 
 export interface IProps {
   players: Array<IPlayer>;
@@ -28,9 +27,15 @@ export default (props: IProps) => {
         </thead>
         <tbody>
           {
-            props.players.map(p => {
-              return <PlayerRow player={p} key={p.account_id} />;
-            })
+            props.players.map(p => 
+              <RowHover key={p.account_id}>
+                <td><img src={p.avatar_full} className="img-fluid" alt="" width="50" height="50"/></td>
+                <td>{p.player_name}</td>
+                <td>{p.country_code}</td>
+                <td></td>
+                <td>{moment(p.last_match_time).format('D MMM YYYY')}</td>
+              </RowHover>
+            )
           }
         </tbody>
       </table>

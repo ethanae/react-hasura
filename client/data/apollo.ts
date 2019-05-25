@@ -36,9 +36,7 @@ const link = split(
 
 export const client = new ApolloClient({
   link,
-  cache: new InMemoryCache({
-    addTypename: true,
-  })
+  cache: new InMemoryCache()
 });
 
 type Definition = { kind: string; operation?: string; };
