@@ -13,8 +13,8 @@ CREATE TABLE "dota2".team (
 
 CREATE TABLE "dota2".player (
   id SERIAL PRIMARY KEY,
-  account_id BIGINT NOT NULL,
-  steam_id TEXT NOT NULL,
+  account_id BIGINT NOT NULL UNIQUE,
+  steam_id TEXT NOT NULL UNIQUE,
   avatar TEXT,
   avatar_medium TEXT,
   avatar_full TEXT,
@@ -25,7 +25,7 @@ CREATE TABLE "dota2".player (
   player_name TEXT NOT NULL,
   country_code TEXT,
   fantasy_role INTEGER,
-  team_id INTEGER,
+  team_id INTEGER REFERENCES "dota2".team(team_id),
   is_locked BOOLEAN,
   is_pro BOOLEAN
 );

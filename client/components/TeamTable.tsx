@@ -29,7 +29,9 @@ export default (props: IProps) => {
         { 
           props.teams.map(t => {
             const Team = withRouter(({ history }) => (
-              <RowHover key={t.id} onClick={() => history.push('/teams/'+t.team_name, { team: t })}>
+              <RowHover 
+                key={t.id} 
+                onClick={() => history.push('/teams/'+t.team_name, { team: t })}>
                 <td><img src={t.logo_url} className="img-fluid" alt="" width="50" height="50"/></td>
                 <td>{t.team_name || t.tag}</td>
                 <td>{t.wins}</td>

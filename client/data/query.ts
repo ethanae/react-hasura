@@ -1,6 +1,4 @@
 import gql from 'graphql-tag';
-import { client } from './apollo';
-import { IPlayer } from '../types';
 
 export const queryTeams = gql`
   {
@@ -58,6 +56,9 @@ export const queryPlayersPaged = (offset: number, limit: number) => {
         player_name
         team_id
         country_code
+        dota2_team {
+          team_name  
+        }
       }
       dota2_player_aggregate {
         aggregate {

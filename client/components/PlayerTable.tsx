@@ -32,7 +32,7 @@ export default (props: IProps) => {
                 <td><img src={p.avatar_full} className="img-fluid" alt="" width="50" height="50"/></td>
                 <td>{p.player_name}</td>
                 <td>{p.country_code}</td>
-                <td></td>
+                <td>{p.team_name}</td>
                 <td>{moment(p.last_match_time).format('D MMM YYYY')}</td>
               </RowHover>
             )

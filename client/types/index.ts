@@ -36,6 +36,7 @@ export interface IPlayer {
   player_name: string;
   country_code: string;
   last_match_time: string;
+  team_name: string;
 }
 
 
