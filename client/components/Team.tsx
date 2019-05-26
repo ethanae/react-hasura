@@ -6,6 +6,7 @@ import { queryPlayersByTeamId } from '../data/query';
 import { RotateSpinner } from 'react-spinners-kit';
 import { createToast } from '../utils';
 import PlayerCard from './PlayerCard';
+import { Link } from 'react-router-dom';
 
 export interface IProps {
   team: ITeam;
@@ -21,7 +22,7 @@ export default (props: IProps) => {
         <img src={team.logo_url} className="m-2" alt="" width="100" height="100"/>
         <h1 className="align-self-center">{team.team_name}</h1>
       </div>
-      {
+      {       
         props.render && !team ? props.render(props)
         : 
         <Query<{ dota2_player: IPlayer[] }> query={queryPlayersByTeamId} variables={{ teamId: team.team_id }}>
@@ -35,7 +36,7 @@ export default (props: IProps) => {
                 });
                 return null;
               }
-              console.log(data)
+              
               return (
                 <div>
                   { 
