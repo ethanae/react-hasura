@@ -11,6 +11,7 @@ export const queryTeamIDs = gql`
 export const queryTeams = gql`
   {
     dota2_team {
+      team_id,
       team_name,
       tag,
       rating,
@@ -81,6 +82,7 @@ export const queryTeamsPaged = (offset: number, limit: number) => {
   return gql`
     query {
       dota2_team(offset: ${offset}, limit: ${limit}) {
+        team_id,
         team_name,
         tag,
         rating,
