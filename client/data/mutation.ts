@@ -119,6 +119,10 @@ export async function insertHeroes(): Promise<Notice> {
       localized_name: h.localized_name,
       primary_attr: h.primary_attr,
       attack_type: h.attack_type,
+      /**
+       * Send Postgres text[] values through as strings
+       * https://github.com/hasura/graphql-engine/issues/1170
+       */
       roles: `{${h.roles.join(',')}}`,
       legs: h.legs
     };
