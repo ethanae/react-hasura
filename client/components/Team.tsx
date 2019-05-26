@@ -17,7 +17,7 @@ export interface IProps {
 export default (props: IProps) => {
   const { team } = props.location && props.location.state && props.location.state;
   return (
-    <div className="text-light">
+    <div className="text-light container">
       <div className="d-flex p-2 justify-content-end">
         <img src={team.logo_url} className="m-2" alt="" width="100" height="100"/>
         <h1 className="align-self-center">{team.team_name}</h1>
@@ -36,12 +36,14 @@ export default (props: IProps) => {
                 });
                 return null;
               }
-              
+
               return (
-                <div>
+                <div className="d-flex flex-row flex-wrap justify-content-center">
                   { 
-                    data && 
-                    data.dota2_player.map(p => <PlayerCard key={p.account_id} player={p} />) 
+                    data && data.dota2_player.length ? 
+                      data.dota2_player.map(p => <PlayerCard key={p.account_id} player={p} />) 
+                      :
+                      <h3>No players found</h3>
                   }
                 </div>
               );
