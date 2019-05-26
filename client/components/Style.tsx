@@ -1,5 +1,4 @@
 import styled, { keyframes } from 'styled-components';
-
 export const rotate = keyframes`
   from {
     transform: rotate(0deg);
@@ -8,7 +7,6 @@ export const rotate = keyframes`
     transform: rotate(360deg);
   }
 `;
-
 export const Spin = styled.div`
   display: inline-block;
   animation: ${rotate} 2s linear infinite;
@@ -21,18 +19,15 @@ export const glow = keyframes`
     box-shadow: 0 0 10px 10px red;
   }
 `;
-
 export const Glow = styled.div`
   animation: ${glow} 1s infinite alternate;
 `;
-
 export const RowHover = styled.tr`
   cursor: pointer;
   &:hover {
     color: #00ff89
   };
 `;
-
 export const PlayerWrapper = styled.div`
   color: #00ff89;
   background-color: #282828;
@@ -47,7 +42,6 @@ export const PlayerWrapper = styled.div`
     opacity: 0.5;
   };
 `;
-
 export const Nav = styled.nav`
   a {
     color: #00ff89

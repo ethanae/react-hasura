@@ -29,3 +29,14 @@ CREATE TABLE "dota2".player (
   is_locked BOOLEAN,
   is_pro BOOLEAN
 );
+
+CREATE TABLE "dota2".heroes (
+  id SERIAL PRIMARY KEY,
+  hero_id INTEGER NOT NULL UNIQUE,
+  hero_name TEXT NOT NULL,
+  localized_name TEXT NOT NULL,
+  primary_attr TEXT NOT NULL,
+  attack_type TEXT NOT NULL,
+  roles TEXT[] NOT NULL,
+  legs INTEGER
+);

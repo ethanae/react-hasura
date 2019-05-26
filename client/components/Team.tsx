@@ -25,7 +25,9 @@ export default (props: IProps) => {
       {       
         props.render && !team ? props.render(props)
         : 
-        <Query<{ dota2_player: IPlayer[] }> query={queryPlayersByTeamId} variables={{ teamId: team.team_id }}>
+        <Query<{ dota2_player: IPlayer[] }> 
+          query={queryPlayersByTeamId} 
+          variables={{ teamId: team.team_id }}>
           {
             ({ data, loading, error }) => {
               if (loading) return <RotateSpinner />;

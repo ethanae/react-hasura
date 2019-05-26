@@ -30,11 +30,11 @@ export default (props: IProps) => {
             const Team = withRouter(({ history }) => (
               <RowHover 
                 key={t.id} 
-                onClick={() => history.push('/teams/'+t.team_name, { team: t })}>
+                onClick={() => history.push('/teams/'+t.team_id, { team: t })}>
                 <td>
                   <img src={t.logo_url} className="img-fluid" alt="" width="50" height="50"/>
                 </td>
-                <td>{ t.team_name }</td>
+                <td>{ t.team_name || '-' }</td>
                 <td>{t.wins}</td>
                 <td>{t.losses}</td>
                 <td>{moment(t.last_match_time * 1000).format('D MMM YYYY')}</td>
