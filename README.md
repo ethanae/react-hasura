@@ -11,9 +11,10 @@ Hasura may fail to connect to the PostgreSQL server, if that happens, running `d
 
 **Note**: until the Hasura CLI supports tracking tables, [issue #1418](https://github.com/hasura/graphql-engine/issues/1418), every brand new Hasura container instance needs some assistance; you need to tell it to track all the tables it found in the PostgreSQL schema. To do so:
 
-1. Open the Hasura console: [http://localhost:1337](http://localhost:1337).
-2. Navigate to the `Data` tab
-3. Select the `dota_2` schema from the dropdown
-4. Next to the _Untracked tables or views_ heading click _Track all_
+1. Open the Hasura console: [http://localhost:1337](http://localhost:1337).  
+2. Navigate to the `Data` tab  
+3. Select the `dota_2` schema from the dropdown  
+4. Next to the _Untracked tables or views_ click _Track all_  
+5. Then _Untracked foreign-key relations_ click _Track all_  
 
-That should do it; everything should be communicating now.
+Everything should be communicating now.
