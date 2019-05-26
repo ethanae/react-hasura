@@ -30,7 +30,7 @@ CREATE TABLE "dota2".player (
   is_pro BOOLEAN
 );
 
-CREATE TABLE "dota2".heroes (
+CREATE TABLE "dota2".hero (
   id SERIAL PRIMARY KEY,
   hero_id INTEGER NOT NULL UNIQUE,
   hero_name TEXT NOT NULL,

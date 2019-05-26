@@ -6,23 +6,33 @@ import { IDota2TeamAggregateResponse, Notice, IDota2PlayerAggregateResponse, ITe
 const apiBaseUrl = 'https://api.opendota.com/api';
 
 export const insertTeamsMutation = gql`
-    mutation insert_dota2_team($objects: [dota2_team_insert_input!]!) {
-      insert_dota2_team(objects: $objects) {
-        returning {
-          team_name
-        }
+  mutation insert_dota2_team($objects: [dota2_team_insert_input!]!) {
+    insert_dota2_team(objects: $objects) {
+      returning {
+        team_name
       }
     }
+  }
 `;
 
 export const insertPlayersMutation = gql`
-    mutation insert_dota2_player($objects: [dota2_player_insert_input!]!) {
-      insert_dota2_player(objects: $objects) {
-        returning {
-          player_name
-        }
+  mutation insert_dota2_player($objects: [dota2_player_insert_input!]!) {
+    insert_dota2_player(objects: $objects) {
+      returning {
+        player_name
       }
     }
+  }
+`;
+
+export const insertHeroesMutation = gql`
+  mutation insert_dota2_hero($objects: [dota2_hero_insert_input!]!) {
+    insert_dota2_hero(objects: $objects) {
+      returning {
+        hero_name
+      }
+    }
+  }
 `;
 
 export async function insertTeams(): Promise<Notice> {
@@ -97,4 +107,25 @@ export async function insertPlayers(): Promise<Notice> {
     message: `Added ${result.data.insert_dota2_player.returning.length} players`,
     type: 'success'
   }
-} 
+}
+
+export async function insertHeroes(): Promise<Notice> {
+  const response = await (await fetch(apiBaseUrl + '/heroes')).json();
+
+  const heroes = response.map((h: any) => {
+    return {
+      hero_id: h.id,
+      hero_name: h.name,
+      localized_name: h.localized_name,
+      primary_attr: h.primary_attr,
+      attack_type: h.attack_type,
+      roles: `{${h.roles.join(',')}}`,
+      legs: h.legs
+    };
+  });
+  const result = await client.mutate({ mutation: insertHeroesMutation, variables: { objects: heroes } });
+  return {
+    message: `Added ${result.data.insert_dota2_hero.returning.length} heroes`,
+    type: 'success'
+  }
+}
