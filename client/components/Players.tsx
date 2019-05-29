@@ -54,7 +54,7 @@ export default class extends React.Component<IProps, { offset: number; limit: nu
                   ({ data, error, loading }) => {
                     if (error) return <p>Error loading players</p>;
                     if (loading) return <RotateSpinner />;
-                    if (!data || !data.dota2_player.length) return <p>No players found</p>
+                    if (!data || !data.dota2_player.length) return <p className="text-light">No players found</p>
                     return data.dota2_player.map(p => <PlayerCard key={p.account_id} player={p} />);
                   }
                 }
@@ -69,7 +69,7 @@ export default class extends React.Component<IProps, { offset: number; limit: nu
                       return null;
                     }
                     if (loading) return <RotateSpinner />;
-                    if (!data || !data.dota2_player.length) return <p>No players found</p>
+                    if (!data || !data.dota2_player.length) return <p className="text-light">No players found</p>
                     return (
                       <div>
                         <PlayerTable

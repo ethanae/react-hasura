@@ -11,13 +11,13 @@ export default class extends React.Component<{}, { teams: Array<ITeam>; }> {
       teams: [] as Array<ITeam>
     } 
   }
-  onInitialiseApp = async () => {
-    const teamsNotice = await insertTeams();
-    createToast(teamsNotice);
-    const playersNotice = await insertPlayers();
-    createToast(playersNotice);
-    const heroesNotice = await insertHeroes();
-    createToast(heroesNotice);
+  onInitialiseApp = () => {
+    // TODO: optimise to prevent ui blocking
+    insertTeams().then(teamsNotice => createToast(teamsNotice));
+    
+    insertPlayers().then(playersNotice => createToast(playersNotice));
+
+    insertHeroes().then(heroesNotice => createToast(heroesNotice));
   }
 
   render() {

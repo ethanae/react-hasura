@@ -45,7 +45,7 @@ export default class extends React.Component<{}, { offset: number; limit: number
                   return null;
                 }
                 if (!data || !data.dota2_team.length) {
-                  return <div>No teams found</div>;
+                  return <div className="text-light">No teams found</div>;
                 }
                 return (
                   <div>
