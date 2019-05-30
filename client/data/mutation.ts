@@ -35,6 +35,18 @@ export const insertHeroesMutation = gql`
   }
 `;
 
+export const insertTeamHeroesMutation = gql`
+  mutation insert_dota2_team_hero($objects: [dota2_team_hero_insert_input!]!) {
+    insert_dota2_team_hero(objects: $objects) {
+      returning {
+        id
+      }
+    }
+  }
+`;
+
+let teamIDs: number[] = [];
+
 export async function insertTeams(): Promise<Notice> {
   const { data: { dota2_team_aggregate: { aggregate: { count } } } } = await client.query<IDota2TeamAggregateResponse>({ query: countTeams });
   if (count > 0) {
@@ -75,7 +87,7 @@ export async function insertPlayers(): Promise<Notice> {
   const players = await (await fetch(apiBaseUrl + '/proPlayers')).json();
   
   const { data: { dota2_team } } = await client.query<ITeamIDQueryResponse>({ query: queryTeamIDs })
-  const teamIDs = dota2_team.map(t => t.team_id);
+  teamIDs = dota2_team.map(t => t.team_id);
   const preparedPlayers = players.filter((p: any) => p.team_id && teamIDs.includes(p.team_id)).map((p: any) => {
     return {
       account_id: p.account_id,
@@ -132,4 +144,22 @@ export async function insertHeroes(): Promise<Notice> {
     message: `Added ${result.data.insert_dota2_hero.returning.length} heroes`,
     type: 'success'
   }
+}
+
+export async function insertTeamHeroes() {
+  teamIDs.map(id => {
+    fetch(`${apiBaseUrl}/teams/${id}/heroes`).then(res => res.json())
+    .then(result => {
+      const teamHeroes = {
+        team_id: id,
+        hero_id: result.hero_id,
+        games_played: result.games_played,
+        wins: result.wins,
+      };
+
+      client.mutate({ mutation: insertTeamHeroesMutation, variables: { objects: teamHeroes } }).then(res => {
+        console.log('inserted', res);
+      });
+    })
+  });
 }
