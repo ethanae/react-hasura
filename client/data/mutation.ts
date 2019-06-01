@@ -2,6 +2,7 @@ import { client } from './apollo';
 import gql from 'graphql-tag';
 import { countTeams, countPlayers, queryTeamIDs, countHeroes } from './query';
 import { IDota2TeamAggregateResponse, Notice, IDota2PlayerAggregateResponse, ITeamIDQueryResponse, IDota2HeroAggregateResponse } from '../types';
+import { createToast } from '../utils';
 
 const apiBaseUrl = 'https://api.opendota.com/api';
 
@@ -45,13 +46,14 @@ export const insertTeamHeroesMutation = gql`
   }
 `;
 
-export async function insertTeams(): Promise<Notice> {
+export async function insertTeams() {
   const { data: { dota2_team_aggregate: { aggregate: { count } } } } = await client.query<IDota2TeamAggregateResponse>({ query: countTeams });
   if (count > 0) {
-    return {
+    createToast({
       message: 'Team data already exists ¯\\_(ツ)_/¯',
       type: 'info'
-    };
+    });
+    return;
   }
 
   const teams = await (await fetch(apiBaseUrl + '/teams')).json();
@@ -61,29 +63,38 @@ export async function insertTeams(): Promise<Notice> {
     return team;
   });
 
+  const teamChunks = chunkArr(mappedTeams, 50);
+  console.log({ teamChunks })
+  let promises: Promise<any>[] = [];
+  teamChunks.map(arr => {
+    setTimeout(() => {
+      const promise = client.mutate({
+        mutation: insertTeamsMutation,
+        variables: { objects: mappedTeams }
+      });
+      promises.push(promise);
+    }, 3000);
+  })
 
-  await client.mutate({
-    mutation: insertTeamsMutation,
-    variables: { objects: mappedTeams }
-  });
-
-  return {
-    message: 'Adding teams...',
+  await Promise.all(promises);
+  createToast({
+    message: 'Added players',
     type: 'success'
-  };
+  });
 }
 
-export async function insertPlayers(): Promise<Notice> {
+export async function insertPlayers() {
   const { data: { dota2_player_aggregate: { aggregate } } } = await client.query<IDota2PlayerAggregateResponse>({ query: countPlayers });
   if (aggregate.count > 0) {
-    return {
+    createToast({
       message: 'Player data already exists',
       type: 'info'
-    }
+    });
+    return;
   }
 
   const players = await (await fetch(apiBaseUrl + '/proPlayers')).json();
-  
+
   const { data: { dota2_team } } = await client.query<ITeamIDQueryResponse>({ query: queryTeamIDs })
   const teamIDs = dota2_team.map(t => t.team_id);
   const preparedPlayers = players.filter((p: any) => p.team_id && teamIDs.includes(p.team_id)).map((p: any) => {
@@ -106,27 +117,36 @@ export async function insertPlayers(): Promise<Notice> {
     };
   });
 
-  const result = await client.mutate({ 
-    mutation: insertPlayersMutation,
-    variables: {
-      objects: preparedPlayers
-    }
-  });
-  
-  return {
-    message: `Added ${result.data.insert_dota2_player.returning.length} players`,
+  const playerChunked = chunkArr(preparedPlayers, 50);
+  console.log({ playerChunked })
+  let promises: any[] = [];
+  playerChunked.map(arr => {
+    setTimeout(() => {
+      const promise = client.mutate({
+        mutation: insertPlayersMutation,
+        variables: {
+          objects: arr
+        }
+      });
+      promises.push(promise);
+    }, 3000);
+  })
+  await Promise.all(promises);
+  createToast({
+    message: `Added players`,
     type: 'success'
-  }
+  });
 }
 
-export async function insertHeroes(): Promise<Notice> {
+export async function insertHeroes() {
   const { data: { dota2_hero_aggregate: { aggregate } } } = await client.query<IDota2HeroAggregateResponse>({ query: countHeroes });
 
-  if(aggregate.count > 0) { 
-    return {
+  if (aggregate.count > 0) {
+    createToast({
       message: `Heroes already exist`,
       type: 'info'
-    } 
+    });
+    return;
   }
 
   const response = await (await fetch(apiBaseUrl + '/heroes')).json();
@@ -147,30 +167,40 @@ export async function insertHeroes(): Promise<Notice> {
     };
   });
   const result = await client.mutate({ mutation: insertHeroesMutation, variables: { objects: heroes } });
-  return {
-    message: `Added ${result.data.insert_dota2_hero.returning.length} heroes`,
+  createToast({
+    message: `Added heroes`,
     type: 'success'
-  }
+  });
 }
 
 export async function insertTeamHeroes() {
   const { data: { dota2_team } } = await client.query<ITeamIDQueryResponse>({ query: queryTeamIDs })
   const teamIDs = dota2_team.map(t => t.team_id);
   teamIDs.map(id => {
-    fetch(`${apiBaseUrl}/teams/${id}/heroes`).then(res => res.json())
-    .then(result => {
-      const teamHeroes = result.map((teamHero: any) => {
-        return {
-          team_id: id,
-          hero_id: teamHero.hero_id,
-          games_played: teamHero.games_played,
-          wins: teamHero.wins,
-        };
-      });
-      console.log({ teamHeroes });
-      client.mutate({ mutation: insertTeamHeroesMutation, variables: { objects: teamHeroes } }).then(res => {
-        console.log('inserted', res);
-      });
-    })
+    // api rate limiting
+    setTimeout(() => {
+      fetch(`${apiBaseUrl}/teams/${id}/heroes`).then(res => res.json())
+        .then(result => {
+          const teamHeroes = result.map((teamHero: any) => {
+            return {
+              team_id: id,
+              hero_id: teamHero.hero_id,
+              games_played: teamHero.games_played,
+              wins: teamHero.wins,
+            };
+          });
+          client.mutate({ mutation: insertTeamHeroesMutation, variables: { objects: teamHeroes } }).catch(err => {
+
+          });
+        });
+    }, 5000);
   });
+}
+
+function chunkArr(arr: any[], size: number) {
+  let chunks: any[][] = [];
+  for (let i = 0; i < arr.length; i++) {
+    chunks.push(arr.slice(i, i + size));
+  }
+  return chunks;
 }

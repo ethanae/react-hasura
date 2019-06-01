@@ -14,13 +14,10 @@ export default class extends React.Component<{}, { teams: Array<ITeam>; }> {
   
   onInitialiseApp = () => {
     // TODO: optimise to prevent ui blocking
-    insertTeams().then(teamsNotice => createToast(teamsNotice));
-    
-    insertPlayers();
-
-    insertHeroes().then(heroesNotice => createToast(heroesNotice));
-
-    insertTeamHeroes();
+    insertTeams()
+    .then(insertPlayers)
+    .then(insertHeroes)
+    .then(insertTeamHeroes);
   }
 
   render() {
