@@ -11,6 +11,7 @@ export default class extends React.Component<{}, { teams: Array<ITeam>; }> {
       teams: [] as Array<ITeam>
     } 
   }
+  
   onInitialiseApp = () => {
     // TODO: optimise to prevent ui blocking
     insertTeams().then(teamsNotice => createToast(teamsNotice));

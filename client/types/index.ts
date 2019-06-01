@@ -34,6 +34,14 @@ export interface IDota2PlayerAggregateResponse {
   };
 }
 
+export interface IDota2HeroAggregateResponse {
+  dota2_hero_aggregate: {
+    aggregate: {
+      count: number;
+    }
+  };
+}
+
 export interface IPlayer {
   account_id: number;
   avatar_full: string;

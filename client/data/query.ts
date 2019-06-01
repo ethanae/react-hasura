@@ -43,6 +43,16 @@ export const countPlayers = gql`
   }
 `;
 
+export const countHeroes = gql`
+  {
+    dota2_hero_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+`;
+
 export const queryPlayersByTeamId = gql`
   query dota2_player($teamId: Int!) {
     dota2_player (where: { team_id: { _eq: $teamId } }) {

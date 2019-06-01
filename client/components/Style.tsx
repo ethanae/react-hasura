@@ -42,11 +42,23 @@ export const PlayerWrapper = styled.div`
     opacity: 0.5;
   };
 `;
+
 export const Nav = styled.nav`
   a {
-    color: #00ff89
-    &:hover {
-      color: #00ff89
+    &.n-link { 
+      color: #00ff89;
+      text-decoration: none !important;
+      &:hover {
+        color: #00ff89;
+        &:before {
+          margin-right: 5px;
+          content: '\003e';
+        }
+        &:active {
+          margin-right: 5px;
+          content: '\003e' !important;
+        }
+      }
     }
   }
 `;
