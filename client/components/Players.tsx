@@ -3,10 +3,10 @@ import { IDota2PlayerQueryResponse, IDota2PlayerAggregateResponse, IDota2PlayerT
 import { queryPlayersByTeamId, queryPlayersPaged } from '../data/query';
 import PlayerCard from './PlayerCard';
 import { Query } from 'react-apollo';
-import { RotateSpinner } from 'react-spinners-kit';
 import PlayerTable from './PlayerTable';
 import Paginate from './Paginate';
 import { createToast } from '../utils';
+const dota2Loader = require('../assets/qwe-loader.gif');
 
 export interface IProps {
   location?: {
@@ -25,7 +25,6 @@ export default class extends React.Component<IProps, { offset: number; limit: nu
       currentPage: 1
     };
   }
-
 
   onNextPage = () => {
     const { offset, limit, currentPage } = this.state;
@@ -53,7 +52,7 @@ export default class extends React.Component<IProps, { offset: number; limit: nu
                 {
                   ({ data, error, loading }) => {
                     if (error) return <p>Error loading players</p>;
-                    if (loading) return <RotateSpinner />;
+                    if (loading) return <img src={dota2Loader}/>;
                     if (!data || !data.dota2_player.length) return <p className="text-light">No players found</p>
                     return data.dota2_player.map(p => <PlayerCard key={p.account_id} player={p} />);
                   }
@@ -68,7 +67,7 @@ export default class extends React.Component<IProps, { offset: number; limit: nu
                       createToast({ message: 'There was an error fetching players.', type: 'error' });
                       return null;
                     }
-                    if (loading) return <RotateSpinner />;
+                    if (loading) return <img src={dota2Loader}/>;
                     if (!data || !data.dota2_player.length) return <p className="text-light">No players found</p>
                     return (
                       <div>

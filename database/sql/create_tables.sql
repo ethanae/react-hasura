@@ -44,7 +44,7 @@ CREATE TABLE "dota2".hero (
 CREATE TABLE "dota2".team_hero (
   id SERIAL PRIMARY KEY,
   team_id INTEGER NOT NULL REFERENCES "dota2".team(team_id),
-  hero_id INTEGER NOT NULL REFERENCES "dota2".hero(hero_id),
-  games_played INTEGER NOT NULL,
-  wins INTEGER NOT NULL
+  hero_id INTEGER,
+  games_played INTEGER,
+  wins INTEGER
 );

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Query } from 'react-apollo';
-import { RotateSpinner } from "react-spinners-kit";
+const dota2Loader = require('../assets/qwe-loader.gif');
 
 import { createToast } from '../utils';
 import TeamTable from './TeamTable';
@@ -39,7 +39,7 @@ export default class extends React.Component<{}, { offset: number; limit: number
             query={queryTeamsPaged(this.state.offset, this.state.limit)}>
             {
               ({ data, error, loading }) => {
-                if (loading) return <RotateSpinner />;
+                if (loading) return <img src={dota2Loader}/>;
                 if (error) {
                   createToast({ message: 'There was an error fetching teams.', type: 'error' });
                   return null;

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+const dota2Logo = require('../assets/dota-2-static.png');
 
 import Teams from './Teams';
 import Players from './Players';
@@ -15,8 +16,8 @@ export default () => {
           <Link className="btn btn-link" to='/'>
             <img
               className="img-fluid"
-              width="50" height="50"
-              src="https://png.pngtree.com/svg/20161009/c24277a29e.png" alt="Dota 2" />
+              width="80" height="80"
+              src={dota2Logo} alt="Dota 2" />
           </Link>
           <Link className="btn btn-link" to='/teams'>Teams</Link>
           <Link className="btn btn-link" to='/players'>Players</Link>

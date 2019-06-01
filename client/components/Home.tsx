@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { ITeam } from '../types';
-import { insertTeams, insertPlayers, insertHeroes } from '../data/mutation';
+import { insertTeams, insertPlayers, insertHeroes, insertTeamHeroes } from '../data/mutation';
 import { createToast } from '../utils';
 
 export default class extends React.Component<{}, { teams: Array<ITeam>; }> {
@@ -15,9 +15,11 @@ export default class extends React.Component<{}, { teams: Array<ITeam>; }> {
     // TODO: optimise to prevent ui blocking
     insertTeams().then(teamsNotice => createToast(teamsNotice));
     
-    insertPlayers().then(playersNotice => createToast(playersNotice));
+    insertPlayers();
 
     insertHeroes().then(heroesNotice => createToast(heroesNotice));
+
+    insertTeamHeroes();
   }
 
   render() {

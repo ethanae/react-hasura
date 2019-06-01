@@ -3,10 +3,9 @@ import { ITeam, IPlayer } from '../types';
 import { ReactComponentLike } from 'prop-types';
 import { Query } from 'react-apollo';
 import { queryPlayersByTeamId } from '../data/query';
-import { RotateSpinner } from 'react-spinners-kit';
+const dota2Loader = require('../assets/qwe-loader.gif');
 import { createToast } from '../utils';
 import PlayerCard from './PlayerCard';
-import { Link } from 'react-router-dom';
 
 export interface IProps {
   team: ITeam;
@@ -30,7 +29,7 @@ export default (props: IProps) => {
           variables={{ teamId: team.team_id }}>
           {
             ({ data, loading, error }) => {
-              if (loading) return <RotateSpinner />;
+              if (loading) return <img src={dota2Loader}/>;
               if (error) {
                 createToast({ 
                   message: `There was an error loading players for ${team.team_name}.`, 

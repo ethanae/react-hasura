@@ -29,7 +29,6 @@ module.exports = {
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader'
-
         }
       },
       {
@@ -38,6 +37,11 @@ module.exports = {
           { loader: 'style-loader' },
           { loader: 'css-loader' }
         ]
+      },
+      {
+        test: /\.(jpg|png|gif)$/,
+        exclude: /node_modules/,
+        loader: 'file-loader',
       }
     ]
   },
