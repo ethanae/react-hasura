@@ -17,7 +17,7 @@ export default (props: IProps) => {
       <ProgressiveImage src={avatar_full} placeholder="">
         {(src: string, loading: boolean) => (
           loading ?
-            <div className="p-3 m-auto"><img src={dota2Loader} /></div> :
+            <div className="p-3 m-auto"><img src={dota2Loader} width="100" height="100"/></div> :
             <img className="card-img-top" src={src} />
         )}
       </ProgressiveImage>

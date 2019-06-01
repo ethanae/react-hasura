@@ -41,48 +41,30 @@ export default class extends React.Component<IProps, { offset: number; limit: nu
     return (
       <div className="container">
         <h1 className="text-light">Players</h1>
-        <div className="justify-content-center">
+        <div className="d-flex justify-content-center">
           {
-            // split these 2 properly
-            // problem occurs when already viewing player cards and clicking players link
-            this.props.location && this.props.location.state && this.props.location.state.teamId ?
-              <Query<IDota2PlayerQueryResponse, { teamId: number }>
-                query={queryPlayersByTeamId}
-                variables={{ teamId: this.props.location.state.teamId }}>
-                {
-                  ({ data, error, loading }) => {
-                    if (error) return <p>Error loading players</p>;
-                    if (loading) return <img src={dota2Loader}/>;
-                    if (!data || !data.dota2_player.length) return <p className="text-light">No players found</p>
-                    return data.dota2_player.map(p => <PlayerCard key={p.account_id} player={p} />);
+            <Query<IDota2PlayerTeamNestedQueryResponse & IDota2PlayerAggregateResponse>
+              query={queryPlayersPaged(this.state.offset, this.state.limit)}>
+              {
+                ({ data, error, loading }) => {
+                  if (error) {
+                    createToast({ message: 'There was an error fetching players.', type: 'error' });
+                    return null;
                   }
+                  if (loading) return <img src={dota2Loader} />;
+                  if (!data || !data.dota2_player.length) return <p className="text-light">No players found</p>
+                  return (
+                    <div>
+                      <PlayerTable players={data.dota2_player} />
+                      <Paginate
+                        label={`${this.state.currentPage}/${Math.ceil(data.dota2_player_aggregate.aggregate.count / this.state.limit)}`}
+                        onPageBackward={this.onPrevPage}
+                        onPageForward={this.onNextPage} />
+                    </div>
+                  );
                 }
-              </Query>
-              :
-              <Query<IDota2PlayerTeamNestedQueryResponse & IDota2PlayerAggregateResponse>
-                query={queryPlayersPaged(this.state.offset, this.state.limit)}>
-                {
-                  ({ data, error, loading }) => {
-                    if (error) {
-                      createToast({ message: 'There was an error fetching players.', type: 'error' });
-                      return null;
-                    }
-                    if (loading) return <img src={dota2Loader}/>;
-                    if (!data || !data.dota2_player.length) return <p className="text-light">No players found</p>
-                    return (
-                      <div>
-                        <PlayerTable
-                          players={data.dota2_player}
-                        />
-                        <Paginate
-                          label={`${this.state.currentPage}/${Math.ceil(data.dota2_player_aggregate.aggregate.count / this.state.limit)}`}
-                          onPageBackward={this.onPrevPage}
-                          onPageForward={this.onNextPage} />
-                      </div>
-                    );
-                  }
-                }
-              </Query>
+              }
+            </Query>
           }
         </div>
       </div>

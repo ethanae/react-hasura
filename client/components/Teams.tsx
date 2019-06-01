@@ -34,12 +34,12 @@ export default class extends React.Component<{}, { offset: number; limit: number
     return (
       <div className="container">
         <h1 className="text-light">Teams</h1>
-        <div className="justify-content-center">
+        <div className="d-flex justify-content-center">
           <Query<IDota2TeamQueryResponse & IDota2TeamAggregateResponse> 
             query={queryTeamsPaged(this.state.offset, this.state.limit)}>
             {
               ({ data, error, loading }) => {
-                if (loading) return <img src={dota2Loader}/>;
+                if(loading) return <img src={dota2Loader} />;
                 if (error) {
                   createToast({ message: 'There was an error fetching teams.', type: 'error' });
                   return null;
