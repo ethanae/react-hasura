@@ -64,18 +64,14 @@ export async function insertTeams() {
   });
 
   const teamChunks = chunkArr(mappedTeams, 100);
-  console.log({ teamChunks })
   let promises: Promise<any>[] = [];
   teamChunks.map(arr => {
-    // setTimeout(() => {
-      const promise = client.mutate({
-        mutation: insertTeamsMutation,
-        variables: { objects: arr }
-      });
-      promises.push(promise);
-    // }, 3000);
+    const promise = client.mutate({
+      mutation: insertTeamsMutation,
+      variables: { objects: arr }
+    });
+    promises.push(promise);
   })
-  console.log({ promises })
   await Promise.all(promises);
   createToast({
     message: 'Added teams',
@@ -117,21 +113,20 @@ export async function insertPlayers() {
     };
   });
 
-  const playerChunked = chunkArr(preparedPlayers, 50);
-  console.log({ playerChunked })
+  const playerChunked = chunkArr(preparedPlayers, 100);
   let promises: any[] = [];
   playerChunked.map(arr => {
-    setTimeout(() => {
-      const promise = client.mutate({
-        mutation: insertPlayersMutation,
-        variables: {
-          objects: arr
-        }
-      });
-      promises.push(promise);
-    }, 3000);
-  })
+    const promise = client.mutate({
+      mutation: insertPlayersMutation,
+      variables: {
+        objects: arr
+      }
+    });
+    promises.push(promise);
+  });
+
   await Promise.all(promises);
+
   createToast({
     message: `Added players`,
     type: 'success'
@@ -166,7 +161,7 @@ export async function insertHeroes() {
       legs: h.legs
     };
   });
-  const result = await client.mutate({ mutation: insertHeroesMutation, variables: { objects: heroes } });
+  await client.mutate({ mutation: insertHeroesMutation, variables: { objects: heroes } });
   createToast({
     message: `Added heroes`,
     type: 'success'
@@ -176,29 +171,36 @@ export async function insertHeroes() {
 export async function insertTeamHeroes() {
   const { data: { dota2_team } } = await client.query<ITeamIDQueryResponse>({ query: queryTeamIDs })
   const teamIDs = dota2_team.map(t => t.team_id);
-  teamIDs.map(id => {
-    // api rate limiting
-    setTimeout(() => {
-      fetch(`${apiBaseUrl}/teams/${id}/heroes`).then(res => res.json())
-        .then(result => {
-          const teamHeroes = result.map((teamHero: any) => {
-            return {
-              team_id: id,
-              hero_id: teamHero.hero_id,
-              games_played: teamHero.games_played,
-              wins: teamHero.wins,
-            };
-          });
-          client.mutate({ mutation: insertTeamHeroesMutation, variables: { objects: teamHeroes } }).catch(err => {
 
-          });
-        });
-    }, 5000);
+  const teamIdChunks = chunkArr(teamIDs, 20);
+
+  teamIdChunks.map(IdArr => {
+    
   });
+
+  // teamIDs.map((id) => {
+  //   // api rate limiting
+  //   setTimeout(() => {
+  //     fetch(`${apiBaseUrl}/teams/${id}/heroes`).then(res => res.json())
+  //       .then(result => {
+  //         const teamHeroes = result.map((teamHero: any) => {
+  //           return {
+  //             team_id: id,
+  //             hero_id: teamHero.hero_id,
+  //             games_played: teamHero.games_played,
+  //             wins: teamHero.wins,
+  //           };
+  //         });
+  //         client.mutate({ mutation: insertTeamHeroesMutation, variables: { objects: teamHeroes } }).catch(err => {
+
+  //         });
+  //       });
+  //   }, index * 10);
+  // });
 }
 
-function chunkArr(arr: any[], size: number) {
-  let chunks: any[][] = [];
+function chunkArr<T>(arr: T[], size: number) {
+  let chunks: T[][] = [];
   for (let i = 0; i < arr.length; i += size) {
     chunks.push(arr.slice(i, i + size));
   }
