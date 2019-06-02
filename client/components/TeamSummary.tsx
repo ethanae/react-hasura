@@ -47,6 +47,10 @@ export default (props: IProps) => {
             <p className="card-text">
               <span className="text-secondary">Attack type</span>: {mostPlayed.hero.attack_type}
             </p>
+            <p className="card-text">
+              <span className="text-secondary">Roles</span>: <br/> 
+              {mostPlayed.hero.roles.join(', ')}
+            </p>
           </div>
         </CardWrapper>
 
@@ -68,6 +72,10 @@ export default (props: IProps) => {
             <p className="card-text">
               <span className="text-secondary">Attack type</span>: {mostSuccessful.hero.attack_type}
             </p>
+            <p className="card-text">
+              <span className="text-secondary">Roles</span>: <br/> 
+              {mostSuccessful.hero.roles.join(', ')}
+            </p>
           </div>
         </CardWrapper>
 
@@ -88,6 +96,10 @@ export default (props: IProps) => {
             </p>
             <p className="card-text">
               <span className="text-secondary">Attack type</span>: {leastSuccessful.hero.attack_type}
+            </p>
+            <p className="card-text">
+              <span className="text-secondary">Roles</span>: <br/> 
+              {leastSuccessful.hero.roles.join(', ')}
             </p>
           </div>
         </CardWrapper>
