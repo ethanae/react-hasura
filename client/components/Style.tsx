@@ -6,18 +6,18 @@ export const RowHover = styled.tr`
     color: #00ff89
   };
 `;
-export const CardWrapper = styled.div`
+export const CardWrapper = styled.div<{ clickable: boolean; }>`
   color: #00ff89;
   background-color: #282828;
   border-color: #00ff89;
-  cursor: pointer;
   -webkit-transition: opacity .3s ease-in-out;
   -moz-transition: opacity .3s ease-in-out;
   -ms-transition: opacity .3s ease-in-out;
   -o-transition: opacity .3s ease-in-out;
   transition: opacity .3s ease-in-out;
+  cursor: ${props => props.clickable ? 'pointer' : 'default' };
   &:hover {
-    opacity: 0.5;
+    opacity: ${props => props.clickable ? '0.5' : '1'};
   };
 `;
 

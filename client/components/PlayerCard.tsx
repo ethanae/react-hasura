@@ -13,7 +13,7 @@ export default (props: IProps) => {
   const { avatar_full, player_name, country_code } = props.player;
 
   return (
-    <CardWrapper className="card p-2 m-2">
+    <CardWrapper clickable={true} className="card p-2 m-2">
       <ProgressiveImage src={avatar_full} placeholder="">
         {(src: string, loading: boolean) => (
           loading ?

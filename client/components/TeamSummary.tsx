@@ -28,8 +28,8 @@ export default (props: IProps) => {
           <span className="text-danger">Losses</span>: {teamDetails.losses}
         </p>
       </div>
-      <div className="d-flex flex-row justify-content-center">
-        <CardWrapper className="card m-2">
+      <div className="d-flex flex-row flex-wrap justify-content-center">
+        <CardWrapper clickable={false} className="card m-2">
           <div className="card-body">
             <h4 className="card-title text-right text-bold text-primary">Most Played Hero</h4>
             <h5 className="card-text text-center border border-light">
@@ -50,7 +50,7 @@ export default (props: IProps) => {
           </div>
         </CardWrapper>
 
-        <CardWrapper className="card m-2">
+        <CardWrapper clickable={false} className="card m-2">
           <div className="card-body">
             <h4 className="card-title text-right text-bold text-primary">Most Successful Hero</h4>
             <h5 className="card-text text-center border border-light">
@@ -71,7 +71,7 @@ export default (props: IProps) => {
           </div>
         </CardWrapper>
 
-        <CardWrapper className="card m-2">
+        <CardWrapper clickable={false} className="card m-2">
           <div className="card-body">
             <h4 className="card-title text-right text-bold text-primary">Least Successful Hero</h4>
             <h5 className="card-text text-center border border-light">
