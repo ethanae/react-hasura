@@ -1,44 +1,47 @@
 import * as React from 'react';
-
-import { ITeam } from '../types';
 import { insertTeams, insertPlayers, insertHeroes, insertTeamHeroes } from '../data/mutation';
-import { createToast } from '../utils';
+const aegisImg = require('../assets/aegis.gif');
+const aegisImgLoader = require('../assets/aegis-loader.gif');
 
-export default class extends React.Component<{}, { teams: Array<ITeam>; progressMessage: string; }> {
+
+export default class extends React.Component<{}, { progressMessage: string; }> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      teams: [] as Array<ITeam>,
-      progressMessage: ''
-    } 
+      progressMessage: 'Click the Aegis to initialise the App'
+    }
   }
 
   componentDidMount() {
     //@ts-ignore
-    this.progress.addEventListener('notify', (e) => {
+    window.addEventListener('notify', (e) => {
+      //@ts-ignore
       console.log('got event', e.detail);
+      //@ts-ignore
       this.setState({ progressMessage: e.detail });
     })
   }
-  
+
   onInitialiseApp = () => {
     // TODO: optimise to prevent ui blocking
     insertTeams()
-    .then(insertPlayers)
-    .then(insertHeroes)
-    .then(insertTeamHeroes);
+      .then(insertPlayers)
+      .then(insertHeroes)
+      .then(insertTeamHeroes)
+      .then(_ => this.setState({ progressMessage: 'Initialisation complete' }));
   }
 
   render() {
     return (
-      <div className="container-fluid">
-        <div>
-          <button className="btn btn-lg btn-success" onClick={this.onInitialiseApp}>
-            Initialise
-          </button>
-          //@ts-ignore
-          <h3 ref={elem => this.progress = elem}>{this.state.progressMessage}</h3>
-        </div>
+      <div className="container-fluid text-light">
+        <div className="d-flex flex-column align-items-center mt-5">
+          <p>{this.state.progressMessage}</p>
+            <img src={aegisImg} alt="Aegis" style={{ cursor: 'pointer', height: '300px', width: '300px' }}
+              onMouseOver={e => (e.target as HTMLImageElement).setAttribute('src', aegisImgLoader)}
+              onMouseLeave={e => (e.target as HTMLImageElement).setAttribute('src', aegisImg)}
+              onClick={this.onInitialiseApp}
+            />
+          </div>
       </div>
     );
   }

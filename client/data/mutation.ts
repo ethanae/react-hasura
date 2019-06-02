@@ -47,12 +47,12 @@ export const insertTeamHeroesMutation = gql`
 `;
 
 export async function insertTeams() {
+  let event = new CustomEvent('notify', { detail: 'Forming teams...' });
+  window.dispatchEvent(event);
   const { data: { dota2_team_aggregate: { aggregate: { count } } } } = await client.query<IDota2TeamAggregateResponse>({ query: countTeams });
   if (count > 0) {
-    createToast({
-      message: 'Team data already exists ¯\\_(ツ)_/¯',
-      type: 'info'
-    });
+    event = new CustomEvent('notify', { detail: 'Teams already formed' });
+    window.dispatchEvent(event);
     return;
   }
 
@@ -73,19 +73,17 @@ export async function insertTeams() {
     promises.push(promise);
   })
   await Promise.all(promises);
-  createToast({
-    message: 'Added teams',
-    type: 'success'
-  });
+  event = new CustomEvent('notify', { detail: 'Teams successfully formed!' });
+  window.dispatchEvent(event);
 }
 
 export async function insertPlayers() {
+  let event = new CustomEvent('notify', { detail: 'Respawning players...' });
+  window.dispatchEvent(event);
   const { data: { dota2_player_aggregate: { aggregate } } } = await client.query<IDota2PlayerAggregateResponse>({ query: countPlayers });
   if (aggregate.count > 0) {
-    createToast({
-      message: 'Player data already exists',
-      type: 'info'
-    });
+    event = new CustomEvent('notify', { detail: 'Players already respawned' });
+    window.dispatchEvent(event);
     return;
   }
 
@@ -126,22 +124,18 @@ export async function insertPlayers() {
   });
 
   await Promise.all(promises);
-  const event = new CustomEvent('notify', { detail: 'Added players...' });
+  event = new CustomEvent('notify', { detail: 'Successfully spawned players!' });
   window.dispatchEvent(event);
-  createToast({
-    message: `Added players`,
-    type: 'success'
-  });
 }
 
 export async function insertHeroes() {
+  let event = new CustomEvent('notify', { detail: 'Creating heroes...' });
+  window.dispatchEvent(event);
   const { data: { dota2_hero_aggregate: { aggregate } } } = await client.query<IDota2HeroAggregateResponse>({ query: countHeroes });
 
   if (aggregate.count > 0) {
-    createToast({
-      message: `Heroes already exist`,
-      type: 'info'
-    });
+    event = new CustomEvent('notify', { detail: 'Heroes already created' });
+    window.dispatchEvent(event);
     return;
   }
 
@@ -163,17 +157,17 @@ export async function insertHeroes() {
     };
   });
   await client.mutate({ mutation: insertHeroesMutation, variables: { objects: heroes } });
-  createToast({
-    message: `Added heroes`,
-    type: 'success'
-  });
+  event = new CustomEvent('notify', { detail: 'Successfully created heroes!' });
+  window.dispatchEvent(event);
 }
 
 export async function insertTeamHeroes() {
+  let event = new CustomEvent('notify', { detail: 'Populating each team\'s played heroes...' });
+  window.dispatchEvent(event);
   const { data: { dota2_team_hero_aggregate: { aggregate } } } = await client.query<IDota2TeamHeroAggregateResponse>({ query: countTeamHeroes });
 
-  if(aggregate.count > 0) {
-    const event = new CustomEvent('notify', { detail: 'Team heroes exist...' });
+  if (aggregate.count > 0) {
+    event = new CustomEvent('notify', { detail: 'Eeach team\'s heroes already populated...' });
     window.dispatchEvent(event);
     return;
   }
@@ -184,26 +178,26 @@ export async function insertTeamHeroes() {
   const teamIdChunks = chunkArr(teamIDs, 20);
   const startingTimeout = 30000;
 
-  const event = new CustomEvent('notify', { detail: 'Juking API rate limiting...' });
+  event = new CustomEvent('notify', { detail: 'Juking API rate limiting...' });
   window.dispatchEvent(event);
 
-  teamIdChunks.map((IdArr, index) => {  
+  teamIdChunks.map((IdArr, index) => {
     const nextTimeout = startingTimeout * (index + 1);
-    console.log(`Queuing ${IdArr.length} inserts to be serviced in ${nextTimeout/1000} seconds` );
+    console.log(`Queuing ${IdArr.length} inserts to be serviced in ${nextTimeout / 1000} seconds`);
     setTimeout(() => {
       IdArr.map(teamId => {
         fetch(`${apiBaseUrl}/teams/${teamId}/heroes`).then(res => res.json())
-        .then(result => {
-          const teamHeroes = result.map((teamHero: any) => {
-            return {
-              team_id: teamId,
-              hero_id: teamHero.hero_id,
-              games_played: teamHero.games_played,
-              wins: teamHero.wins
-            };
+          .then(result => {
+            const teamHeroes = result.map((teamHero: any) => {
+              return {
+                team_id: teamId,
+                hero_id: teamHero.hero_id,
+                games_played: teamHero.games_played,
+                wins: teamHero.wins
+              };
+            });
+            client.mutate({ mutation: insertTeamHeroesMutation, variables: { objects: teamHeroes } });
           });
-          const promise = client.mutate({ mutation: insertTeamHeroesMutation, variables: { objects: teamHeroes } });
-        });
       });
     }, nextTimeout);
   });
