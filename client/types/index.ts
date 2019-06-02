@@ -42,6 +42,14 @@ export interface IDota2HeroAggregateResponse {
   };
 }
 
+export interface IDota2TeamHeroAggregateResponse {
+  dota2_team_hero_aggregate: {
+    aggregate: {
+      count: number;
+    }
+  };
+}
+
 export interface IPlayer {
   account_id: number;
   avatar_full: string;

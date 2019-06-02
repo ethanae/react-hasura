@@ -1,7 +1,7 @@
 import { client } from './apollo';
 import gql from 'graphql-tag';
-import { countTeams, countPlayers, queryTeamIDs, countHeroes } from './query';
-import { IDota2TeamAggregateResponse, IDota2PlayerAggregateResponse, ITeamIDQueryResponse, IDota2HeroAggregateResponse } from '../types';
+import { countTeams, countPlayers, queryTeamIDs, countHeroes, countTeamHeroes } from './query';
+import { IDota2TeamAggregateResponse, IDota2PlayerAggregateResponse, ITeamIDQueryResponse, IDota2HeroAggregateResponse, IDota2TeamHeroAggregateResponse } from '../types';
 import { createToast } from '../utils';
 
 const apiBaseUrl = 'https://api.opendota.com/api';
@@ -126,7 +126,8 @@ export async function insertPlayers() {
   });
 
   await Promise.all(promises);
-
+  const event = new CustomEvent('notify', { detail: 'Added players...' });
+  window.dispatchEvent(event);
   createToast({
     message: `Added players`,
     type: 'success'
@@ -169,6 +170,14 @@ export async function insertHeroes() {
 }
 
 export async function insertTeamHeroes() {
+  const { data: { dota2_team_hero_aggregate: { aggregate } } } = await client.query<IDota2TeamHeroAggregateResponse>({ query: countTeamHeroes });
+
+  if(aggregate.count > 0) {
+    const event = new CustomEvent('notify', { detail: 'Team heroes exist...' });
+    window.dispatchEvent(event);
+    return;
+  }
+
   const { data: { dota2_team } } = await client.query<ITeamIDQueryResponse>({ query: queryTeamIDs })
   const teamIDs = dota2_team.map(t => t.team_id);
 

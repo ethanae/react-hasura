@@ -46,5 +46,6 @@ CREATE TABLE "dota2".team_hero (
   team_id INTEGER NOT NULL REFERENCES "dota2".team(team_id),
   hero_id INTEGER NOT NULL REFERENCES "dota2".hero(hero_id),
   games_played INTEGER,
-  wins INTEGER
+  wins INTEGER,
+  CONSTRAINT no_duplicate_team_id_hero_id UNIQUE(team_id, hero_id)
 );
