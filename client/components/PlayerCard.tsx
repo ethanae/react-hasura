@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IPlayer } from '../types';
-import { PlayerWrapper } from './Style';
+import { CardWrapper } from './Style';
 
 import ProgressiveImage from 'react-progressive-image';
 const dota2Loader = require('../assets/qwe-loader.gif');
@@ -13,7 +13,7 @@ export default (props: IProps) => {
   const { avatar_full, player_name, country_code } = props.player;
 
   return (
-    <PlayerWrapper className="card p-2 m-2">
+    <CardWrapper className="card p-2 m-2">
       <ProgressiveImage src={avatar_full} placeholder="">
         {(src: string, loading: boolean) => (
           loading ?
@@ -25,6 +25,6 @@ export default (props: IProps) => {
         <h4 className="card-title text-bold">{player_name}</h4>
         <p className="card-text">Country: {country_code}</p>
       </div>
-    </PlayerWrapper>
+    </CardWrapper>
   );
 }

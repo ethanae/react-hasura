@@ -75,7 +75,7 @@ export interface IDota2PlayerTeamNestedQueryResponse {
 }
 
 export interface IDota2TeamDetailsQuery extends Pick<ITeam, 'team_name' | 'wins' | 'losses' | 'rating'> {
-   team_heroes: {
+   team_heros: Array<{
      games_played: number;
       wins: number;
       hero: {
@@ -84,7 +84,7 @@ export interface IDota2TeamDetailsQuery extends Pick<ITeam, 'team_name' | 'wins'
         primary_attr: string;
         roles: string[];
       }
-   }
+   }>;
 }
 
 export interface IDota2TeamDetailsQueryResponse {

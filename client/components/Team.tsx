@@ -20,7 +20,6 @@ export default (props: IProps) => {
         <img src={team.logo_url} className="m-2" alt="" width="100" height="100"/>
         <h1 className="align-self-center">{team.team_name}</h1>
       </div>
-      {       
         <Query<IDota2TeamDetailsQueryResponse> query={queryTeamHeroes} variables={{ teamId: team.team_id }}>
           {
             ({ data, loading, error }) => {
@@ -39,34 +38,33 @@ export default (props: IProps) => {
           }
         </Query>
 
-        // <Query<{ dota2_player: IPlayer[] }> 
-        //   query={queryPlayersByTeamId} 
-        //   variables={{ teamId: team.team_id }}>
-        //   {
-        //     ({ data, loading, error }) => {
-        //       if (loading) return <img src={dota2Loader}/>;
-        //       if (error) {
-        //         createToast({ 
-        //           message: `There was an error loading players for ${team.team_name}.`, 
-        //           type: 'error' 
-        //         });
-        //         return null;
-        //       }
+         <Query<{ dota2_player: IPlayer[] }> 
+          query={queryPlayersByTeamId} 
+          variables={{ teamId: team.team_id }}>
+          {
+            ({ data, loading, error }) => {
+              if (loading) return <img src={dota2Loader}/>;
+              if (error) {
+                createToast({ 
+                  message: `There was an error loading players for ${team.team_name}.`, 
+                  type: 'error' 
+                });
+                return null;
+              }
 
-        //       return (
-        //         <div className="d-flex flex-row flex-wrap justify-content-center">
-        //           { 
-        //             data && data.dota2_player.length ? 
-        //               data.dota2_player.map(p => <PlayerCard key={p.account_id} player={p} />) 
-        //               :
-        //               <h3>No players found</h3>
-        //           }
-        //         </div>
-        //       );
-        //     }
-        //   }
-        // </Query>
-      }
+              return (
+                <div className="d-flex flex-row flex-wrap justify-content-center">
+                  { 
+                    data && data.dota2_player.length ? 
+                      data.dota2_player.map(p => <PlayerCard key={p.account_id} player={p} />) 
+                      :
+                      <h3>No players found</h3>
+                  }
+                </div>
+              );
+            }
+          }
+        </Query>
     </div>
   );
 };
