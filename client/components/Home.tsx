@@ -17,7 +17,7 @@ export default class extends React.Component<{}, { teams: Array<ITeam>; }> {
     insertTeams()
     .then(insertPlayers)
     .then(insertHeroes)
-    // .then(insertTeamHeroes);
+    .then(insertTeamHeroes);
   }
 
   render() {

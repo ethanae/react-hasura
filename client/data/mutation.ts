@@ -63,7 +63,7 @@ export async function insertTeams() {
     return team;
   });
 
-  const teamChunks = chunkArr(mappedTeams, 100);
+  const teamChunks = chunkArr(mappedTeams, 50);
   let promises: Promise<any>[] = [];
   teamChunks.map(arr => {
     const promise = client.mutate({
@@ -113,7 +113,7 @@ export async function insertPlayers() {
     };
   });
 
-  const playerChunked = chunkArr(preparedPlayers, 100);
+  const playerChunked = chunkArr(preparedPlayers, 50);
   let promises: any[] = [];
   playerChunked.map(arr => {
     const promise = client.mutate({
@@ -173,30 +173,28 @@ export async function insertTeamHeroes() {
   const teamIDs = dota2_team.map(t => t.team_id);
 
   const teamIdChunks = chunkArr(teamIDs, 20);
-
-  teamIdChunks.map(IdArr => {
-    
+  // let promises: Promise<any>[] = [];
+  const startingTimeout = 30000;
+  teamIdChunks.map((IdArr, index) => {
+    const nextTimeout = startingTimeout * (index + 1);
+    console.log(`Queuing ${IdArr.length} inserts to be serviced in ${nextTimeout/1000} seconds` );
+    setTimeout(() => {
+      IdArr.map(teamId => {
+        fetch(`${apiBaseUrl}/teams/${teamId}/heroes`).then(res => res.json())
+        .then(result => {
+          const teamHeroes = result.map((teamHero: any) => {
+            return {
+              team_id: teamId,
+              hero_id: teamHero.hero_id,
+              games_played: teamHero.games_played,
+              wins: teamHero.wins
+            };
+          });
+          const promise = client.mutate({ mutation: insertTeamHeroesMutation, variables: { objects: teamHeroes } });
+        });
+      });
+    }, nextTimeout);
   });
-
-  // teamIDs.map((id) => {
-  //   // api rate limiting
-  //   setTimeout(() => {
-  //     fetch(`${apiBaseUrl}/teams/${id}/heroes`).then(res => res.json())
-  //       .then(result => {
-  //         const teamHeroes = result.map((teamHero: any) => {
-  //           return {
-  //             team_id: id,
-  //             hero_id: teamHero.hero_id,
-  //             games_played: teamHero.games_played,
-  //             wins: teamHero.wins,
-  //           };
-  //         });
-  //         client.mutate({ mutation: insertTeamHeroesMutation, variables: { objects: teamHeroes } }).catch(err => {
-
-  //         });
-  //       });
-  //   }, index * 10);
-  // });
 }
 
 function chunkArr<T>(arr: T[], size: number) {
