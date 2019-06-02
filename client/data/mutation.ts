@@ -63,22 +63,22 @@ export async function insertTeams() {
     return team;
   });
 
-  const teamChunks = chunkArr(mappedTeams, 50);
+  const teamChunks = chunkArr(mappedTeams, 100);
   console.log({ teamChunks })
   let promises: Promise<any>[] = [];
   teamChunks.map(arr => {
-    setTimeout(() => {
+    // setTimeout(() => {
       const promise = client.mutate({
         mutation: insertTeamsMutation,
-        variables: { objects: mappedTeams }
+        variables: { objects: arr }
       });
       promises.push(promise);
-    }, 3000);
+    // }, 3000);
   })
-
+  console.log({ promises })
   await Promise.all(promises);
   createToast({
-    message: 'Added players',
+    message: 'Added teams',
     type: 'success'
   });
 }
@@ -199,7 +199,7 @@ export async function insertTeamHeroes() {
 
 function chunkArr(arr: any[], size: number) {
   let chunks: any[][] = [];
-  for (let i = 0; i < arr.length; i++) {
+  for (let i = 0; i < arr.length; i += size) {
     chunks.push(arr.slice(i, i + size));
   }
   return chunks;

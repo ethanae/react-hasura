@@ -15,9 +15,9 @@ export default class extends React.Component<{}, { teams: Array<ITeam>; }> {
   onInitialiseApp = () => {
     // TODO: optimise to prevent ui blocking
     insertTeams()
-    .then(insertPlayers)
-    .then(insertHeroes)
-    .then(insertTeamHeroes);
+    // .then(insertPlayers)
+    // .then(insertHeroes)
+    // .then(insertTeamHeroes);
   }
 
   render() {
