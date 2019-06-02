@@ -87,6 +87,10 @@ export interface IDota2TeamDetailsQuery extends Pick<ITeam, 'team_name' | 'wins'
    }
 }
 
+export interface IDota2TeamDetailsQueryResponse {
+  dota2_team: [IDota2TeamDetailsQuery];
+}
+
 export type Notice = {
   message: string;
   type: 'info' | 'success' | 'error';

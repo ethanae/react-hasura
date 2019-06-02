@@ -1,16 +1,15 @@
 import * as React from 'react';
-import { ITeam, IPlayer, IDota2TeamDetailsQuery } from '../types';
-import { ReactComponentLike } from 'prop-types';
+import { ITeam, IPlayer, IDota2TeamDetailsQueryResponse } from '../types';
 import { Query } from 'react-apollo';
 import { queryPlayersByTeamId, queryTeamHeroes } from '../data/query';
 const dota2Loader = require('../assets/qwe-loader.gif');
 import { createToast } from '../utils';
 import PlayerCard from './PlayerCard';
+import TeamSummary from './TeamSummary';
 
 export interface IProps {
   team: ITeam;
-  location: { state: { team: ITeam } },
-  render: (props: any) => ReactComponentLike
+  location: { state: { team: ITeam } }
 }
 
 export default (props: IProps) => {
@@ -22,10 +21,10 @@ export default (props: IProps) => {
         <h1 className="align-self-center">{team.team_name}</h1>
       </div>
       {       
-        <Query<IDota2TeamDetailsQuery> query={queryTeamHeroes} variables={{ teamId: team.team_id }}>
+        <Query<IDota2TeamDetailsQueryResponse> query={queryTeamHeroes} variables={{ teamId: team.team_id }}>
           {
             ({ data, loading, error }) => {
-              if (loading) return <img src={dota2Loader}/>;
+              if (loading) return <img src={dota2Loader} />;
               if (error) {
                 createToast({ 
                   message: `There was an error loading players for ${team.team_name}.`, 
@@ -33,8 +32,9 @@ export default (props: IProps) => {
                 });
                 return null;
               }
-              console.log(data);
-              return null;
+              if(!data || !data.dota2_team) { return <h3>No team details found</h3> }
+              console.log(data.dota2_team);
+              return <TeamSummary teamDetails={data.dota2_team[0]} />
             }
           }
         </Query>

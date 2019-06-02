@@ -124,6 +124,9 @@ export const queryTeamHeroes = gql`
   query dota2_team($teamId: Int!) {
     dota2_team(where: { team_id: { _eq: $teamId } }) {
       team_name
+      wins
+      losses
+      rating
       team_heros {
         games_played
         wins
