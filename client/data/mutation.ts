@@ -2,7 +2,6 @@ import { client } from './apollo';
 import gql from 'graphql-tag';
 import { countTeams, countPlayers, queryTeamIDs, countHeroes, countTeamHeroes } from './query';
 import { IDota2TeamAggregateResponse, IDota2PlayerAggregateResponse, ITeamIDQueryResponse, IDota2HeroAggregateResponse, IDota2TeamHeroAggregateResponse } from '../types';
-import { createToast } from '../utils';
 
 const apiBaseUrl = 'https://api.opendota.com/api';
 

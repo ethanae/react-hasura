@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { ITeam, IPlayer } from '../types';
+import { ITeam, IPlayer, IDota2TeamDetailsQuery } from '../types';
 import { ReactComponentLike } from 'prop-types';
 import { Query } from 'react-apollo';
-import { queryPlayersByTeamId } from '../data/query';
+import { queryPlayersByTeamId, queryTeamHeroes } from '../data/query';
 const dota2Loader = require('../assets/qwe-loader.gif');
 import { createToast } from '../utils';
 import PlayerCard from './PlayerCard';
@@ -22,11 +22,7 @@ export default (props: IProps) => {
         <h1 className="align-self-center">{team.team_name}</h1>
       </div>
       {       
-        props.render && !team ? props.render(props)
-        : 
-        <Query<{ dota2_player: IPlayer[] }> 
-          query={queryPlayersByTeamId} 
-          variables={{ teamId: team.team_id }}>
+        <Query<IDota2TeamDetailsQuery> query={queryTeamHeroes} variables={{ teamId: team.team_id }}>
           {
             ({ data, loading, error }) => {
               if (loading) return <img src={dota2Loader}/>;
@@ -37,20 +33,39 @@ export default (props: IProps) => {
                 });
                 return null;
               }
-
-              return (
-                <div className="d-flex flex-row flex-wrap justify-content-center">
-                  { 
-                    data && data.dota2_player.length ? 
-                      data.dota2_player.map(p => <PlayerCard key={p.account_id} player={p} />) 
-                      :
-                      <h3>No players found</h3>
-                  }
-                </div>
-              );
+              console.log(data);
+              return null;
             }
           }
         </Query>
+
+        // <Query<{ dota2_player: IPlayer[] }> 
+        //   query={queryPlayersByTeamId} 
+        //   variables={{ teamId: team.team_id }}>
+        //   {
+        //     ({ data, loading, error }) => {
+        //       if (loading) return <img src={dota2Loader}/>;
+        //       if (error) {
+        //         createToast({ 
+        //           message: `There was an error loading players for ${team.team_name}.`, 
+        //           type: 'error' 
+        //         });
+        //         return null;
+        //       }
+
+        //       return (
+        //         <div className="d-flex flex-row flex-wrap justify-content-center">
+        //           { 
+        //             data && data.dota2_player.length ? 
+        //               data.dota2_player.map(p => <PlayerCard key={p.account_id} player={p} />) 
+        //               :
+        //               <h3>No players found</h3>
+        //           }
+        //         </div>
+        //       );
+        //     }
+        //   }
+        // </Query>
       }
     </div>
   );

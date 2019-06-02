@@ -74,6 +74,19 @@ export interface IDota2PlayerTeamNestedQueryResponse {
   dota2_player: IPlayerNestedTeam[];
 }
 
+export interface IDota2TeamDetailsQuery extends Pick<ITeam, 'team_name' | 'wins' | 'losses' | 'rating'> {
+   team_heroes: {
+     games_played: number;
+      wins: number;
+      hero: {
+        attack_type: string;
+        localized_name: string;
+        primary_attr: string;
+        roles: string[];
+      }
+   }
+}
+
 export type Notice = {
   message: string;
   type: 'info' | 'success' | 'error';

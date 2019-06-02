@@ -13,17 +13,12 @@ export default class extends React.Component<{}, { progressMessage: string; }> {
   }
 
   componentDidMount() {
-    //@ts-ignore
-    window.addEventListener('notify', (e) => {
-      //@ts-ignore
-      console.log('got event', e.detail);
-      //@ts-ignore
+    window.addEventListener('notify', ((e: CustomEvent) => {
       this.setState({ progressMessage: e.detail });
-    })
+    }) as EventListener);
   }
 
   onInitialiseApp = () => {
-    // TODO: optimise to prevent ui blocking
     insertTeams()
       .then(insertPlayers)
       .then(insertHeroes)
@@ -36,9 +31,8 @@ export default class extends React.Component<{}, { progressMessage: string; }> {
       <div className="container-fluid text-light">
         <div className="d-flex flex-column align-items-center mt-5">
           <p>{this.state.progressMessage}</p>
-            <img src={aegisImg} alt="Aegis" style={{ cursor: 'pointer', height: '300px', width: '300px' }}
-              onMouseOver={e => (e.target as HTMLImageElement).setAttribute('src', aegisImgLoader)}
-              onMouseLeave={e => (e.target as HTMLImageElement).setAttribute('src', aegisImg)}
+            <img src={aegisImgLoader} alt="Aegis" className="mt-5" 
+              style={{ cursor: 'pointer', height: '250px', width: '250px' }}
               onClick={this.onInitialiseApp}
             />
           </div>

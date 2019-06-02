@@ -119,3 +119,21 @@ export const queryTeamsPaged = (offset: number, limit: number) => {
     }
   `;
 }
+
+export const queryTeamHeroes = gql`
+  query dota2_team($teamId: Int!) {
+    dota2_team(where: { team_id: { _eq: $teamId } }) {
+      team_name
+      team_heros {
+        games_played
+        wins
+        hero {
+          attack_type
+          localized_name
+          primary_attr
+          roles
+        }
+      }
+    }
+  }
+`;
