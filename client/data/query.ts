@@ -91,7 +91,7 @@ export const queryPlayersPaged = (offset: number, limit: number) => {
 export const queryTeamsPaged = (offset: number, limit: number) => {
   return gql`
     query {
-      dota2_team(offset: ${offset}, limit: ${limit}) {
+      dota2_team(offset: ${offset}, limit: ${limit}, order_by: { rating: desc }) {
         team_id,
         team_name,
         tag,

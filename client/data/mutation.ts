@@ -1,7 +1,7 @@
 import { client } from './apollo';
 import gql from 'graphql-tag';
 import { countTeams, countPlayers, queryTeamIDs, countHeroes } from './query';
-import { IDota2TeamAggregateResponse, Notice, IDota2PlayerAggregateResponse, ITeamIDQueryResponse, IDota2HeroAggregateResponse } from '../types';
+import { IDota2TeamAggregateResponse, IDota2PlayerAggregateResponse, ITeamIDQueryResponse, IDota2HeroAggregateResponse } from '../types';
 import { createToast } from '../utils';
 
 const apiBaseUrl = 'https://api.opendota.com/api';
@@ -173,9 +173,12 @@ export async function insertTeamHeroes() {
   const teamIDs = dota2_team.map(t => t.team_id);
 
   const teamIdChunks = chunkArr(teamIDs, 20);
-  // let promises: Promise<any>[] = [];
   const startingTimeout = 30000;
-  teamIdChunks.map((IdArr, index) => {
+
+  const event = new CustomEvent('notify', { detail: 'Juking API rate limiting...' });
+  window.dispatchEvent(event);
+
+  teamIdChunks.map((IdArr, index) => {  
     const nextTimeout = startingTimeout * (index + 1);
     console.log(`Queuing ${IdArr.length} inserts to be serviced in ${nextTimeout/1000} seconds` );
     setTimeout(() => {
