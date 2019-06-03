@@ -1,7 +1,7 @@
 import { client } from './apollo';
 import gql from 'graphql-tag';
 import { countTeams, countPlayers, queryTeamIDs, countHeroes, countTeamHeroes } from './query';
-import { IDota2TeamAggregateResponse, IDota2PlayerAggregateResponse, ITeamIDQueryResponse, IDota2HeroAggregateResponse, IDota2TeamHeroAggregateResponse } from '../types';
+import { IDota2TeamAggregateResponse, IDota2PlayerAggregateResponse, ITeamIDQueryResponse, IDota2HeroAggregateResponse, IDota2TeamHeroAggregateResponse, IDota2InsertTeamHeroResponse } from '../types';
 
 const apiBaseUrl = 'https://api.opendota.com/api';
 
@@ -164,7 +164,7 @@ export async function insertTeamHeroes() {
   let event = new CustomEvent('notify', { detail: 'Populating each team\'s played heroes...' });
   window.dispatchEvent(event);
   const { data: { dota2_team_hero_aggregate: { aggregate } } } = await client.query<IDota2TeamHeroAggregateResponse>({ query: countTeamHeroes });
-
+  
   if (aggregate.count > 0) {
     event = new CustomEvent('notify', { detail: 'Eeach team\'s heroes already populated...' });
     window.dispatchEvent(event);
@@ -181,7 +181,7 @@ export async function insertTeamHeroes() {
   window.dispatchEvent(event);
 
   teamIdChunks.map((IdArr, index) => {
-    const nextTimeout = startingTimeout * (index + 1);
+    const nextTimeout = startingTimeout * index;
     setTimeout(() => {
       IdArr.map(teamId => {
         fetch(`${apiBaseUrl}/teams/${teamId}/heroes`).then(res => res.json())
@@ -194,7 +194,16 @@ export async function insertTeamHeroes() {
                 wins: teamHero.wins
               };
             });
-            client.mutate({ mutation: insertTeamHeroesMutation, variables: { objects: teamHeroes } });
+
+            client
+              .mutate<IDota2InsertTeamHeroResponse>({ mutation: insertTeamHeroesMutation, variables: { objects: teamHeroes } })
+              .then(response => {
+                const { data } = response;
+                const added = (data && data.insert_dota2_team_hero.returning.length || 0);
+                console.log({ data });
+                event = new CustomEvent('onInsertTeamHeroesProgress', { detail: added.toString() });
+                window.dispatchEvent(event);
+              });
           });
       });
     }, nextTimeout);

@@ -91,6 +91,12 @@ export interface IDota2TeamDetailsQueryResponse {
   dota2_team: [IDota2TeamDetailsQuery];
 }
 
+export interface IDota2InsertTeamHeroResponse {
+  insert_dota2_team_hero: {
+    returning: { id: number; }[];
+  }
+}
+
 export type Notice = {
   message: string;
   type: 'info' | 'success' | 'error';
