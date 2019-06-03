@@ -182,7 +182,6 @@ export async function insertTeamHeroes() {
 
   teamIdChunks.map((IdArr, index) => {
     const nextTimeout = startingTimeout * (index + 1);
-    console.log(`Queuing ${IdArr.length} inserts to be serviced in ${nextTimeout / 1000} seconds`);
     setTimeout(() => {
       IdArr.map(teamId => {
         fetch(`${apiBaseUrl}/teams/${teamId}/heroes`).then(res => res.json())
