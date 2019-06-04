@@ -33,7 +33,7 @@ export default class extends React.Component<{}, { updateMessage: string; }> {
   render() {
     return (
       <Router>
-        <div >
+        <div className="mb-5">
           <Nav className="d-flex align-items-center flex-row flex-wrap">
             <Link className="btn btn-link" to='/'>
               <img
