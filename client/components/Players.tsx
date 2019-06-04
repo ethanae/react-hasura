@@ -8,16 +8,9 @@ import Paginate from './Paginate';
 import { createToast } from '../utils';
 const dota2Loader = require('../assets/qwe-loader.gif');
 
-export interface IProps {
-  location?: {
-    state: {
-      teamId: number;
-    }
-  }
-}
 
-export default class extends React.Component<IProps, { offset: number; limit: number; currentPage: number; }> {
-  constructor(props: IProps) {
+export default class extends React.Component<{}, { offset: number; limit: number; currentPage: number; }> {
+  constructor(props: {}) {
     super(props);
     this.state = {
       offset: 0,
@@ -55,11 +48,13 @@ export default class extends React.Component<IProps, { offset: number; limit: nu
                   if (!data || !data.dota2_player.length) return <p className="text-light">No players found</p>
                   return (
                     <div>
-                      <PlayerTable players={data.dota2_player} />
-                      <Paginate
-                        label={`${this.state.currentPage}/${Math.ceil(data.dota2_player_aggregate.aggregate.count / this.state.limit)}`}
-                        onPageBackward={this.onPrevPage}
-                        onPageForward={this.onNextPage} />
+                      <PlayerTable players={data.dota2_player} render={() => (
+                        <Paginate
+                          label={`${this.state.currentPage}/${Math.ceil(data.dota2_player_aggregate.aggregate.count / this.state.limit)}`}
+                          onPageBackward={this.onPrevPage}
+                          onPageForward={this.onNextPage} />
+                      )}/>
+                      
                     </div>
                   );
                 }

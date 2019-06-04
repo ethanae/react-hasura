@@ -2,9 +2,11 @@ import * as React from 'react';
 import { IPlayerNestedTeam } from '../types';
 import { RowHover } from './Style';
 import * as moment from 'moment';
+import { ReactComponentLike } from 'prop-types';
 
 export interface IProps {
   players: Array<IPlayerNestedTeam>;
+  render?: () => JSX.Element;
 }
 
 export default (props: IProps) => {
@@ -39,6 +41,7 @@ export default (props: IProps) => {
           }
         </tbody>
       </table>
+      { props.render && props.render() }
     </div>
   );
 }
