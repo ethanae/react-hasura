@@ -9,25 +9,32 @@ import Home from './Home';
 import Team from './Team';
 import { Nav } from './Style';
 
-export default class extends React.Component<{}, { added: number; }> {
+export default class extends React.Component<{}, { updateMessage: string; }> {
   constructor(props: {}) {
     super(props);
-    this.state = {
-      added: 0
-    };
+    this.state = { updateMessage: '' };
   }
   componentDidMount() {
-    window.addEventListener('onInsertTeamHeroesProgress', ((e: CustomEvent) => {
-      console.log('got event')
-      this.setState({ added: parseInt(e.detail) });
-    }) as EventListener);
+    window.addEventListener('onInsertTeamHeroesProgress', (this.onInsertTeamHeroes as EventListener));
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('addEventListener', (this.onInsertTeamHeroes as EventListener));
+  }
+
+  onInsertTeamHeroes = (e: CustomEvent) => {
+    this.setState({ updateMessage: `Added ${parseInt(e.detail)} more team details` });
+  }
+
+  updateMessageDisplayTimer() {
+    setTimeout(() => this.setState({ updateMessage: '' }), 5000);
   }
 
   render() {
     return (
       <Router>
-        <div>
-          <Nav>
+        <div >
+          <Nav className="d-flex align-items-center flex-row flex-wrap">
             <Link className="btn btn-link" to='/'>
               <img
                 className="img-fluid"
@@ -44,7 +51,7 @@ export default class extends React.Component<{}, { added: number; }> {
             <Link className="btn btn-link n-link" to='/heroes'>Heroes</Link>
             <Link className="btn btn-link n-link" to='/stats'>Stats</Link>
             <span className="pull-right text-light text-sm">
-              {`Added ${this.state.added} more team details`}
+              {this.state.updateMessage}
             </span>
           </Nav>
 

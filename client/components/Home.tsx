@@ -20,7 +20,7 @@ export default class extends React.Component<{}, { progressMessage: string; }> {
     window.removeEventListener('notify', (this.onNotify as EventListener));
   }
 
-  onNotify = (e: CustomEvent) => this.setState({ progressMessage: e.detail });
+  onNotify = (e: CustomEvent) => e.detail && this.setState({ progressMessage: e.detail });
 
   onInitialiseApp = () => {
     insertTeams()

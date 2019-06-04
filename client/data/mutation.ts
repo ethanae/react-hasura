@@ -200,7 +200,6 @@ export async function insertTeamHeroes() {
               .then(response => {
                 const { data } = response;
                 const added = (data && data.insert_dota2_team_hero.returning.length || 0);
-                console.log({ data });
                 event = new CustomEvent('onInsertTeamHeroesProgress', { detail: added.toString() });
                 window.dispatchEvent(event);
               });
