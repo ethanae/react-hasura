@@ -15,7 +15,7 @@ export interface IProps {
 export default (props: IProps) => {
   const { team } = props.location && props.location.state && props.location.state;
   return (
-    <div className="text-light container">
+    <div className="text-light">
       <div className="d-flex p-2 justify-content-end">
         <img src={team.logo_url} className="m-2" alt="" width="100" height="100"/>
         <h1 className="align-self-center">{team.team_name}</h1>
@@ -32,7 +32,7 @@ export default (props: IProps) => {
                 return null;
               }
               if(!data || !data.dota2_team) { return <h3>No team details found</h3> }
-              console.log(data.dota2_team);
+
               return <TeamSummary teamDetails={data.dota2_team[0]} />
             }
           }

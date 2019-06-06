@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { insertTeams, insertPlayers, insertHeroes, insertTeamHeroes } from '../data/mutation';
-const aegisImg = require('../assets/aegis.gif');
 const aegisImgLoader = require('../assets/aegis-loader.gif');
-
 
 export default class extends React.Component<{}, { progressMessage: string; }> {
   constructor(props: {}) {

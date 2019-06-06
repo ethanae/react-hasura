@@ -27,10 +27,11 @@ export default class extends React.Component<{}, { updateMessage: string; }> {
   }
 
   updateMessageDisplayTimer() {
-    setTimeout(() => this.setState({ updateMessage: '' }), 5000);
+    setTimeout(() => this.setState({ updateMessage: '' }), 10000);
   }
 
   render() {
+    this.updateMessageDisplayTimer();
     return (
       <Router>
         <div className="mb-5">
