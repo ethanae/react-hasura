@@ -40,3 +40,49 @@ export const Nav = styled.nav`
     }
   }
 `;
+
+export const Pagination = styled.ul`
+  li {
+    &.page-item {
+      a, button {
+        -webkit-transition: opacity .2s ease-in-out;
+        -moz-transition: opacity .2s ease-in-out;
+        -ms-transition: opacity .2s ease-in-out;
+        -o-transition: opacity .2s ease-in-out;
+        transition: opacity .2s ease-in-out;
+
+        border-color: #00ff89;
+        &:hover {
+          opacity: 0.6;
+        }
+        &.page-link {
+          background: #282828;
+          color: #00ff89 !important;
+        }
+      }
+    }
+  }
+`;
+
+// <ul className="pagination">
+//         {
+//           !props.label ? null :
+//             <li className="page-item" title='pages'>
+//               <a className="page-link">{props.label}</a>
+//             </li>
+//         }
+//         <li className="page-item">
+//           <button
+//             className="page-link"
+//             onClick={props.onPageBackward}>
+//             Previous
+//           </button>
+//         </li>
+//         <li className="page-item">
+//           <button
+//             className="page-link"
+//             onClick={props.onPageForward}>
+//             Next
+//           </button>
+//         </li>
+//       </ul>

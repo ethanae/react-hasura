@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Pagination } from './Style';
 
 export interface IProps {
   label?: string;
@@ -9,7 +10,7 @@ export interface IProps {
 export default (props: IProps) => {
   return (
     <nav className="d-flex flex-row-reverse">
-      <ul className="pagination">
+      <Pagination className="pagination">
         {
           !props.label ? null :
             <li className="page-item" title='pages'>
@@ -30,7 +31,7 @@ export default (props: IProps) => {
             Next
           </button>
         </li>
-      </ul>
+      </Pagination>
     </nav>
   )
 }
