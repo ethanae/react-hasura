@@ -33,7 +33,7 @@ export default (props: IProps) => {
               const Player = withRouter(({ history }) => {
                 return <RowHover 
                   key={p.account_id}
-                  onClick={() => history.push('/player/'+p.account_id, { accountId: p.account_id })}>
+                  onClick={() => history.push('/player/'+p.account_id, { player: p })}>
                   <td><img src={p.avatar_full} className="img-fluid" alt="" width="50" height="50"/></td>
                   <td>{p.player_name}</td>
                   <td>{p.country_code}</td>

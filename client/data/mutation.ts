@@ -234,7 +234,6 @@ export async function insertRecentPlayerMatches() {
 
   chunkArr(playerAccountIds, 25).map((accIDs, index) => {
     timeoutMultiplier++;
-    console.log({ timeoutMultiplier })
     const nextTimeout = startingTimeout * timeoutMultiplier;
     console.log(`Queued ${accIDs.length} recent matches insert to be processed in ${nextTimeout / 1000} seconds`);
 

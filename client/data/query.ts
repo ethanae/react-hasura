@@ -83,6 +83,30 @@ export const queryPlayerAccountIds = gql`
   }
 `;
 
+export const queryPlayerDetail = gql`
+  query dota2_player($accountId: bigint!, $matchesLimit: Int!) {
+    dota2_player(where: { account_id: { _eq: $accountId } }) {
+      player_recent_matches(limit: $matchesLimit) {
+      xp_per_min
+      tower_damage
+      start_time
+      radiant_win
+      player_slot
+      match_id
+      last_hits
+      kills
+      hero {
+        localized_name
+      }
+      gold_per_min
+      duration
+      deaths
+      assists
+      }
+    }
+  }
+`;
+
 export const queryPlayersPaged = (offset: number, limit: number) => {
   return gql`
     query {

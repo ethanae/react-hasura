@@ -58,6 +58,31 @@ export interface IPlayer {
   last_match_time: string;
 }
 
+export interface IRecentMatch {
+  xp_per_min: number;
+  tower_damage: number;
+  start_time: number;
+  radiant_win: boolean;
+  player_slot: number;
+  match_id: number;
+  last_hits: number;
+  kills: number;
+  gold_per_min: number;
+  duration: number;
+  deaths: number;
+  assists: number;
+}
+
+export interface IRecentPlayerMatchResponse {
+  dota2_player: [{
+    player_recent_matches: (IRecentMatch & {
+      hero: {
+        localized_name: string;
+      };
+    })[];
+  }]
+}
+
 export interface IPlayerTeamQueryNestedResponse {
   team: {
     team_name: string;
@@ -75,16 +100,16 @@ export interface IDota2PlayerTeamNestedQueryResponse {
 }
 
 export interface IDota2TeamDetailsQuery extends Pick<ITeam, 'team_name' | 'wins' | 'losses' | 'rating'> {
-   team_heros: Array<{
-     games_played: number;
-      wins: number;
-      hero: {
-        attack_type: string;
-        localized_name: string;
-        primary_attr: string;
-        roles: string[];
-      }
-   }>;
+  team_heros: Array<{
+    games_played: number;
+    wins: number;
+    hero: {
+      attack_type: string;
+      localized_name: string;
+      primary_attr: string;
+      roles: string[];
+    }
+  }>;
 }
 
 export interface IDota2TeamDetailsQueryResponse {
