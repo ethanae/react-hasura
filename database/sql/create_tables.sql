@@ -49,3 +49,23 @@ CREATE TABLE "dota2".team_hero (
   wins INTEGER,
   CONSTRAINT no_duplicate_team_id_hero_id UNIQUE(team_id, hero_id)
 );
+
+CREATE TABLE "dota2".player_recent_match (
+  id SERIAL PRIMARY KEY,
+  match_id BIGINT NOT NULL UNIQUE,
+  player_slot TINYINT,
+  radiant_win BOOLEAN,
+  duration INTEGER,
+  account_id INTEGER NOT NULL REFERENCES "dota2".player(account_id),
+  hero_id INTEGER NOT NULL REFERENCES "dota2".hero(hero_id),
+  start_time INTEGER,
+  kills TINYINT NOT NULL,
+  deaths TINYINT NOT NULL,
+  assists TINYINT NOT NULL,
+  xp_per_min INTEGER,
+  gold_per_min INTEGER,
+  hero_damage INTEGER,
+  tower_damage INTEGER,
+  hero_healing INTEGER,
+  last_hits TINYINT
+);
