@@ -52,7 +52,7 @@ CREATE TABLE "dota2".team_hero (
 
 CREATE TABLE "dota2".player_recent_match (
   id SERIAL PRIMARY KEY,
-  match_id BIGINT NOT NULL UNIQUE,
+  match_id BIGINT NOT NULL,
   player_slot SMALLINT,
   radiant_win BOOLEAN,
   duration INTEGER,
