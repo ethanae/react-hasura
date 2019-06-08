@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { insertTeams, insertPlayers, insertHeroes, insertTeamHeroes } from '../data/mutation';
+import { insertTeams, insertPlayers, insertHeroes, insertTeamHeroes, insertRecentPlayerMatches } from '../data/mutation';
 const aegisImgLoader = require('../assets/aegis-loader.gif');
 
 export default class extends React.Component<{}, { progressMessage: string; }> {
@@ -25,6 +25,7 @@ export default class extends React.Component<{}, { progressMessage: string; }> {
       .then(insertPlayers)
       .then(insertHeroes)
       .then(insertTeamHeroes)
+      .then(insertRecentPlayerMatches)
       .then(_ => this.setState({ progressMessage: 'Initialisation complete' }));
   }
 

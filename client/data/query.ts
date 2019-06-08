@@ -75,6 +75,14 @@ export const queryPlayersByTeamId = gql`
   }
 `;
 
+export const queryPlayerAccountIds = gql`
+  {
+    dota2_player {
+      account_id
+    }
+  }
+`;
+
 export const queryPlayersPaged = (offset: number, limit: number) => {
   return gql`
     query {

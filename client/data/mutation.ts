@@ -1,9 +1,11 @@
 import { client } from './apollo';
 import gql from 'graphql-tag';
-import { countTeams, countPlayers, queryTeamIDs, countHeroes, countTeamHeroes } from './query';
+import { countTeams, countPlayers, queryTeamIDs, countHeroes, countTeamHeroes, queryPlayerAccountIds } from './query';
 import { IDota2TeamAggregateResponse, IDota2PlayerAggregateResponse, ITeamIDQueryResponse, IDota2HeroAggregateResponse, IDota2TeamHeroAggregateResponse, IDota2InsertTeamHeroResponse } from '../types';
 
 const apiBaseUrl = 'https://api.opendota.com/api';
+let startingTimeout = 30000;
+let timeoutMultiplier = -1;
 
 export const insertTeamsMutation = gql`
   mutation insert_dota2_team($objects: [dota2_team_insert_input!]!) {
@@ -38,6 +40,16 @@ export const insertHeroesMutation = gql`
 export const insertTeamHeroesMutation = gql`
   mutation insert_dota2_team_hero($objects: [dota2_team_hero_insert_input!]!) {
     insert_dota2_team_hero(objects: $objects) {
+      returning {
+        id
+      }
+    }
+  }
+`;
+
+export const insertRecentPlayerMatchesMutation = gql`
+  mutation insert_dota2_player_recent_match($objects: [dota2_player_recent_match_insert_input!]!) {
+    insert_dota2_player_recent_match(objects: $objects) {
       returning {
         id
       }
@@ -164,7 +176,7 @@ export async function insertTeamHeroes() {
   let event = new CustomEvent('notify', { detail: 'Populating each team\'s played heroes...' });
   window.dispatchEvent(event);
   const { data: { dota2_team_hero_aggregate: { aggregate } } } = await client.query<IDota2TeamHeroAggregateResponse>({ query: countTeamHeroes });
-  
+
   if (aggregate.count > 0) {
     event = new CustomEvent('notify', { detail: 'Eeach team\'s heroes already populated...' });
     window.dispatchEvent(event);
@@ -174,14 +186,17 @@ export async function insertTeamHeroes() {
   const { data: { dota2_team } } = await client.query<ITeamIDQueryResponse>({ query: queryTeamIDs })
   const teamIDs = dota2_team.map(t => t.team_id);
 
-  const teamIdChunks = chunkArr(teamIDs, 20);
-  const startingTimeout = 30000;
+  const teamIdChunks = chunkArr(teamIDs, 25);
 
   event = new CustomEvent('notify', { detail: 'Juking API rate limiting...' });
   window.dispatchEvent(event);
 
   teamIdChunks.map((IdArr, index) => {
-    const nextTimeout = startingTimeout * index;
+    timeoutMultiplier++;
+    console.log({ timeoutMultiplier })
+
+    const nextTimeout = startingTimeout * timeoutMultiplier;
+    // needed to get around 60-api-calls per minute rate limit
     setTimeout(() => {
       IdArr.map(teamId => {
         fetch(`${apiBaseUrl}/teams/${teamId}/heroes`).then(res => res.json())
@@ -205,6 +220,57 @@ export async function insertTeamHeroes() {
               });
           });
       });
+    }, nextTimeout);
+  });
+}
+
+export async function insertRecentPlayerMatches() {
+  const playersUrl = apiBaseUrl + '/players';
+
+  const { data: { dota2_player: playerAccountIds } } = await
+    client.query<{ dota2_player: { account_id: number }[] }>({
+      query: queryPlayerAccountIds
+    });
+
+  chunkArr(playerAccountIds, 25).map((accIDs, index) => {
+    timeoutMultiplier++;
+    console.log({ timeoutMultiplier })
+    const nextTimeout = startingTimeout * timeoutMultiplier;
+    console.log(`Queued ${accIDs.length} recent matches insert to be processed in ${nextTimeout / 1000} seconds`);
+
+    setTimeout(() => {
+      accIDs.map(player => {
+        fetch(`${playersUrl}/${player.account_id}/recentmatches`).then(res => res.json())
+          .then((recentMatches: any) => {
+            const matches = recentMatches.map((rm: any) => {
+              return {
+                match_id: rm.match_id,
+                player_slot: rm.player_slot,
+                radiant_win: rm.radiant_win,
+                duration: rm.duration,
+                hero_id: rm.hero_id,
+                account_id: player.account_id,
+                start_time: rm.start_time,
+                kills: rm.kills,
+                deaths: rm.deaths,
+                assists: rm.assists,
+                xp_per_min: rm.xp_per_min,
+                gold_per_min: rm.gold_per_min,
+                hero_damage: rm.hero_damage,
+                tower_damage: rm.tower_damage,
+                hero_healing: rm.hero_healing,
+                last_hits: rm.last_hits
+              };
+            });
+            client.mutate<{ insert_dota2_player_recent_match: number[] }>({
+              mutation: insertRecentPlayerMatchesMutation,
+              variables: { objects: matches }
+            }).then(id => {
+              console.log('recent matches inserted',
+                id.data!.insert_dota2_player_recent_match.length);
+            });
+          });
+      })
     }, nextTimeout);
   });
 }
