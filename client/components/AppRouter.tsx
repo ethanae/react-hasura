@@ -8,6 +8,7 @@ import Players from './Players';
 import Home from './Home';
 import Team from './Team';
 import { Nav } from './Style';
+import PlayerDetail from './PlayerDetail';
 
 export default class extends React.Component<{}, { updateMessage: string; }> {
   constructor(props: {}) {
@@ -60,6 +61,7 @@ export default class extends React.Component<{}, { updateMessage: string; }> {
           <Route path="/teams/:teamName" component={Team} />
           <Route exact path="/teams" component={Teams} />
           <Route path="/players" component={Players} />
+          <Route path="/player" component={PlayerDetail} />
         </div>
       </Router>
     )
