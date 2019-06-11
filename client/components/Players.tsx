@@ -3,9 +3,12 @@ import { IDota2PlayerQueryResponse, IDota2PlayerAggregateResponse, IDota2PlayerT
 import { queryPlayersByTeamId, queryPlayersPaged } from '../data/query';
 import PlayerCard from './PlayerCard';
 import { Query } from 'react-apollo';
-import PlayerTable from './PlayerTable';
+import PlayerTable from './SimpleTable';
 import Paginate from './Paginate';
 import { createToast } from '../utils';
+import { RowHover } from './Style';
+import { withRouter } from 'react-router';
+import * as moment from 'moment';
 const dota2Loader = require('../assets/qwe-loader.gif');
 
 
@@ -48,13 +51,28 @@ export default class extends React.Component<{}, { offset: number; limit: number
                   if (!data || !data.dota2_player.length) return <p className="text-light">No players found</p>
                   return (
                     <div>
-                      <PlayerTable players={data.dota2_player} render={() => (
-                        <Paginate
-                          label={`${this.state.currentPage}/${Math.ceil(data.dota2_player_aggregate.aggregate.count / this.state.limit)}`}
-                          onPageBackward={this.onPrevPage}
-                          onPageForward={this.onNextPage} />
-                      )}/>
-                      
+                      <PlayerTable tableHeaders={['', 'Name', 'Country', 'Team', 'Last Match']} 
+                        render={() => {
+                          return data.dota2_player.map(p => {
+                            const Player = withRouter(({ history }) => {
+                              return <RowHover 
+                                key={p.account_id}
+                                onClick={() => history.push('/player/'+p.account_id, { player: p })}>
+                                <td><img src={p.avatar_full} className="img-fluid" alt="" width="50" height="50"/></td>
+                                <td>{p.player_name}</td>
+                                <td>{p.country_code}</td>
+                                <td>{p.team.team_name}</td>
+                                <td>{moment(p.last_match_time).format('D MMM YYYY')}</td>
+                              </RowHover>
+                            });
+                            return <Player />;
+                          });
+                        }}
+                      />
+                      <Paginate
+                        label={`${this.state.currentPage}/${Math.ceil(data.dota2_player_aggregate.aggregate.count / this.state.limit)}`}
+                        onPageBackward={this.onPrevPage}
+                        onPageForward={this.onNextPage} />
                     </div>
                   );
                 }
