@@ -71,15 +71,12 @@ export interface IRecentMatch {
   duration: number;
   deaths: number;
   assists: number;
+  hero: { localized_name: string; };
 }
 
 export interface IRecentPlayerMatchResponse {
   dota2_player: [{
-    player_recent_matches: (IRecentMatch & {
-      hero: {
-        localized_name: string;
-      };
-    })[];
+    player_recent_matches: IRecentMatch[];
   }]
 }
 
