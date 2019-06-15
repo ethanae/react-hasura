@@ -22,7 +22,7 @@ export default class extends React.Component<Props, { expandDetails: boolean }> 
     const { match } = this.props;
     return (
       <CardWrapper
-        clickable={true}
+        clickable={false}
         className="card text-sm p-2"
         onMouseEnter={this.onCardHover}
         onMouseLeave={this.onCardHoverExit}
@@ -37,19 +37,19 @@ export default class extends React.Component<Props, { expandDetails: boolean }> 
               </span>
             </div>
           { this.state.expandDetails &&
-              <div className="d-flex flex-row justify-content-between">
+              <div className="d-flex flex-row justify-content-between border-top mt-1 p-2">
                 <div className="">
-                  <p title="Kills">K: {match.kills}</p>
-                  <p title="Deaths">D: {match.deaths}</p>
-                  <p title="Assists">A: {match.assists}</p>
+                  <p>Kills: {match.kills}</p>
+                  <p>Deaths: {match.deaths}</p>
+                  <p>Assists: {match.assists}</p>
                 </div>
                 <div>
-                  <p title="Last hits">LH: {match.last_hits}</p>
-                  <p title="Gold per minute">GPM: {match.gold_per_min}</p>
-                  <p title="XP per minute">XPM: {match.xp_per_min}</p>
+                  <p>Last Hits: {match.last_hits}</p>
+                  <p>Gold Per Min: {match.gold_per_min}</p>
+                  <p>XP Per Min: {match.xp_per_min}</p>
                 </div>
                 <div>
-                  <p title="Tower damage">TD: {match.tower_damage}</p>
+                  <p>Tower damage: {match.tower_damage}</p>
                   <p>Duration: {Math.ceil(match.duration / 60)}min</p>
                 </div>
               </div>
