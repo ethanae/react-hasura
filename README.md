@@ -18,3 +18,6 @@ Hasura may fail to connect to the PostgreSQL server, if that happens, running `d
 5. Then _Untracked foreign-key relations_ click _Track all_  
 
 Everything should be communicating now.
+
+## database seeding
+#### Some insertions may take several minutes purely to dodge the Dota 2 Open API rate limiting, currently at 60 calls per minute.  
