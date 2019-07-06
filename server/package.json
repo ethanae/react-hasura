@@ -1,0 +1,12 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "fastify": "^2.6.0"
+  },
+  "scripts": {
+    "serve": "node build/server.js"
+  }
+}
