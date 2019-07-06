@@ -1,5 +1,7 @@
 # An app for Dota 2 teams, players, heroes, and stats using React and [Hasura](https://hasura.io/) 
 
+> **All graphics by [StumpyPotts](https://twitter.com/StumpyPotts)**
+
 ## development
 #### Running `docker-compose up` will start up the development containers for the Hasura engine, and PostgreSQL.
 #### `cd` into `/src/client` and execute `yarn start` in your shell to start up the webpack-dev-server.
