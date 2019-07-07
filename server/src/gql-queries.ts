@@ -29,14 +29,14 @@ export const setTeams = {
   stringified: print(_setTeams)
 };
 
-const _getTeams = gql`
+const _getTeamIDs = gql`
   query getTeams {
     dota2_team {
       team_id
     }
   }
 `;
-export const getTeams = {
-  ast: _getTeams,
-  stringified: print(_getTeams)
+export const getTeamIDs = {
+  ast: _getTeamIDs,
+  stringified: print(_getTeamIDs)
 };

@@ -7,9 +7,9 @@ const fasty = fastify({ logger: true });
 fasty.post('/init', async (req, reply) => {
   try {
     // const teamResult = await new DotaService().setTeams();
-    // const playersResult = await new DotaService().setPlayers();
-    const teams = await new DotaService().getTeams();
-    reply.status(200).send({ teams });
+    const playersResult = await new DotaService().setPlayers();
+    // const teams = await new DotaService().getTeamIDs();
+    reply.status(200).send();
   } catch (err) {
     reply.send({ err });
     fasty.log.error(err);
