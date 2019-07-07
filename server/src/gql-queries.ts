@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import { print } from 'graphql/language/printer';
 
-export const _setPlayers = gql`
+const _setPlayers = gql`
   mutation insert_dota2_player($objects: [dota2_player_insert_input!]!) {
     insert_dota2_player(objects: $objects) {
       returning {

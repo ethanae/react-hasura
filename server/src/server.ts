@@ -6,7 +6,8 @@ const fasty = fastify({ logger: true });
 
 fasty.post('/init', async (req, reply) => {
   try {
-    await new DotaService().setTeams();
+    // const teamResult = await new DotaService().setTeams();
+    const playersResult = await new DotaService().setPlayers();
     reply.status(200).send();
   } catch (err) {
     reply.send({ err });
@@ -14,8 +15,8 @@ fasty.post('/init', async (req, reply) => {
   }
 });
 
-fasty.get('/', async () => {
-  return { message: 'There\'s nothing here' };
+fasty.get('*', async (req, reply) => {
+  reply.callNotFound();
 });
 
 (async () => {

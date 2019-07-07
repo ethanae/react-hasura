@@ -11,17 +11,18 @@ export interface IDotaApiTeam {
 
 export interface IDotaApiPlayer {
   account_id: string;
-  steam_id: string;
+  steamid: string;
   avatar: string;
-  avatar_medium: string;
-  avatar_full: string;
-  profile_url: string;
-  persona_name: string;
+  avatarmedium: string;
+  avatarfull: string;
+  profileurl: string;
+  personaname: string;
   cheese: number;
   last_match_time: string;
-  player_name: string;
+  name: string;
   country_code: string;
   fantasy_role: number;
   team_id: number;
   is_locked: boolean;
+  is_pro: boolean;
 }
