@@ -2,7 +2,7 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { dota2_player_insert_input } from "./../types/graphql-server-types";
+import { dota2_player_insert_input } from "./graphql-server-types";
 
 // ====================================================
 // GraphQL mutation operation: insert_dota2_player
