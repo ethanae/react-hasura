@@ -11,9 +11,9 @@ export default class DotaGqlRepository {
     });
   }
 
-  async set<T extends any, U = any>(mutation: string, variables: T): Promise<U> {
+  async set<T, U = any>(mutation: string, variables: U): Promise<T> {
     try {
-      const result = await this.client.request<U>(mutation, variables);
+      const result = await this.client.request<T>(mutation, variables);
       return result;
     } catch (err) {
       console.log({ err });
@@ -21,9 +21,9 @@ export default class DotaGqlRepository {
     }
   }
 
-  async get<T, U = any>(query: string, variables?: T): Promise<U> {
+  async get<T, U = any>(query: string, variables?: U): Promise<T> {
     try {
-      const result = await this.client.request<U>(query, variables);
+      const result = await this.client.request<T>(query, variables);
       return result;
     } catch (err) {
       console.log({ err });

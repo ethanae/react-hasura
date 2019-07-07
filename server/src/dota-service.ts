@@ -1,15 +1,29 @@
 import DotaGqlRepository from './dota-gql-repository';
 import DotaApi from './dota-api';
-import { setTeams as _setTeams, setPlayers as _setPlayers } from './gql-queries';
+import { 
+  setTeams as _setTeams, 
+  setPlayers as _setPlayers, 
+  getTeams as _getTeams } from './gql-queries';
 import { insert_dota2_teamVariables, insert_dota2_team } from './types/insert_dota2_team';
 import { IDotaApiTeam, IDotaApiPlayer } from './types/dota-api-types';
 import { dota2_team_insert_input, dota2_player_insert_input } from './types/graphql-server-types';
 import { insert_dota2_playerVariables, insert_dota2_player } from './types/insert_dota2_player';
+import { getTeams } from './types/getTeams';
 
 export default class DotaService {
   private readonly dotaRepository: DotaGqlRepository;
   constructor() {
     this.dotaRepository = new DotaGqlRepository();
+  }
+
+  async getTeams() {
+    try {
+      const result = await this.dotaRepository.get<getTeams>(_getTeams.stringified);
+      return result;
+    } catch (err) {
+      console.error({ err });
+      throw err;
+    }
   }
 
   async setTeams() {
@@ -18,7 +32,7 @@ export default class DotaService {
       return (
         await 
           this.dotaRepository
-          .set<insert_dota2_teamVariables, insert_dota2_team>(_setTeams.stringified, { objects: this.mapTeams(result.data) })
+          .set<insert_dota2_team, insert_dota2_teamVariables>(_setTeams.stringified, { objects: this.mapTeams(result.data) })
       );
     } catch (err) {
       console.error({ err });
@@ -32,7 +46,7 @@ export default class DotaService {
       return (
         await 
           this.dotaRepository
-          .set<insert_dota2_playerVariables, insert_dota2_player>(_setPlayers.stringified, { objects: this.mapPlayers(result.data) })
+          .set<insert_dota2_player, insert_dota2_playerVariables>(_setPlayers.stringified, { objects: this.mapPlayers(result.data) })
       );
     } catch (err) {
       console.error({ err });
