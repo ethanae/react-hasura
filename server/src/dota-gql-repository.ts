@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request';
 
-export default class DotaService {
+export default class DotaGqlRepository {
   private readonly client: GraphQLClient;
   constructor() {
     this.client = new GraphQLClient('http://localhost:1337/v1alpha1/graphql', {
@@ -10,22 +10,23 @@ export default class DotaService {
       }
     });
   }
-  async set(mutation: string, variables: any) {
+
+  async set<T extends any, U = any>(mutation: string, variables: T): Promise<U> {
     try {
-      const result = await this.client.request(mutation, variables);
+      const result = await this.client.request<U>(mutation, variables);
       return result;
     } catch (err) {
-      console.error({ err });
-      throw err; 
+      console.log({ err });
+      throw err;
     }
   }
 
-  async get(query: string, variables: any) {
+  async get<T, U = any>(query: string, variables?: T): Promise<U> {
     try {
-      const result = await this.client.request(query, variables);
+      const result = await this.client.request<U>(query, variables);
       return result;
     } catch (err) {
-      console.error({ err });
+      console.log({ err });
       throw err; 
     }
   }
