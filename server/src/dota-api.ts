@@ -1,11 +1,12 @@
 import axios from 'axios';
+import { IDotaApiTeam, IDotaApiPlayer } from './types/dota-api-types';
 
 const baseUrl = 'https://api.opendota.com/api';
 
 export default {
-  fetchTeams: async <T>() => await axios.get<T>(baseUrl + '/teams'),
-  fetchPlayers: async <T>() => await axios.get<T>(baseUrl + '/players'),
-  fetchHeroes: async <T>() => await axios.get<T>(baseUrl + '/heroes'),
-  fetchTeamHeroes: async <T>(teamId: string) => await axios.get<T>(baseUrl + `/teams/${teamId}/heroes`),
-  fetchRecentMatches: async <T>(playerAccountId: string) => await axios.get<T>(baseUrl + `/players/${playerAccountId}/recentmatches`) 
+  fetchTeams: async () => await axios.get<IDotaApiTeam[]>(baseUrl + '/teams'),
+  fetchPlayers: async () => await axios.get<IDotaApiPlayer[]>(baseUrl + '/players'),
+  fetchHeroes: async () => await axios.get(baseUrl + '/heroes'),
+  fetchTeamHeroes: async (teamId: string) => await axios.get(baseUrl + `/teams/${teamId}/heroes`),
+  fetchRecentMatches: async (playerAccountId: string) => await axios.get(baseUrl + `/players/${playerAccountId}/recentmatches`) 
 }
