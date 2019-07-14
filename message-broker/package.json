@@ -1,0 +1,12 @@
+{
+  "name": "message-broker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "amqplib": "^0.5.3"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.5.13"
+  }
+}

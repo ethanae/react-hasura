@@ -13,11 +13,14 @@ services:
       - HASURA_GRAPHQL_DATABASE_URL=postgres://postgres:postgres_password@postgres:5432/postgres # postgresql defaults
       - HASURA_GRAPHQL_ENABLE_CONSOLE=true
       - HASURA_GRAPHQL_ADMIN_SECRET=jkasvbdhbjaasdkahbsd
-  # app:
-  #   build:
-  #     context: ./src/client
-  #   ports:
-  #     - "9000:9000"
-  #   volumes:
-  #     - /app/node_modules
-  #     - ./src/client:/app
+  rabbitmq:
+    build:
+      context: ./message-broker
+    ports:
+      - "5672:5672"
+  rabbitmq-admin:
+    build:
+      context: ./message-broker
+      dockerfile: Dockerfile-rbmq-management
+    ports:
+      - "15672:15672"

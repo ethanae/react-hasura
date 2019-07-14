@@ -56,6 +56,22 @@ export default class DotaService {
     }
   }
 
+  // async setTeamHeroes() {
+  //   try {
+  //     const teamIDs = (await this.getTeamIDs()).dota2_team.map(t => t.team_id);
+  //     const result = await DotaApi.fetchTeamHeroes();
+  //     const players = result.data.filter(p => teamIDs.includes(p.team_id));
+  //     return (
+  //       await 
+  //         this.dotaRepository
+  //         .set<insert_dota2_player, insert_dota2_playerVariables>(_setPlayers.stringified, { objects: this.mapPlayers(players) })
+  //     );
+  //   } catch (err) {
+  //     console.error({ err });
+  //     throw err;
+  //   }
+  // }
+
   private mapTeams(data: IDotaApiTeam[]): dota2_team_insert_input[] {
     return data.map(t => {
       const team = { ...t, team_name: t.name };
