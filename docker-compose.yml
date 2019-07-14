@@ -1,18 +1,18 @@
 version: '3.1'
 services:
-  postgres:
-    build:
-      context: ./database
-  hasura:
-    restart: always
-    build:
-      context: ./hasura
-    ports:
-      - "1337:8080"
-    environment:
-      - HASURA_GRAPHQL_DATABASE_URL=postgres://postgres:postgres_password@postgres:5432/postgres # postgresql defaults
-      - HASURA_GRAPHQL_ENABLE_CONSOLE=true
-      - HASURA_GRAPHQL_ADMIN_SECRET=jkasvbdhbjaasdkahbsd
+  # postgres:
+  #   build:
+  #     context: ./database
+  # hasura:
+  #   restart: always
+  #   build:
+  #     context: ./hasura
+  #   ports:
+  #     - "1337:8080"
+  #   environment:
+  #     - HASURA_GRAPHQL_DATABASE_URL=postgres://postgres:postgres_password@postgres:5432/postgres # postgresql defaults
+  #     - HASURA_GRAPHQL_ENABLE_CONSOLE=true
+  #     - HASURA_GRAPHQL_ADMIN_SECRET=jkasvbdhbjaasdkahbsd
   rabbitmq:
     build:
       context: ./message-broker
