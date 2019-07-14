@@ -13,7 +13,7 @@ export async function subscribe(exchange: string, routingKey: string, ack: boole
     });
     await channel.bindQueue(q.queue, exchange, routingKey);
     await channel.consume(q.queue, handler, {
-      noAck: false
+      noAck: !ack
     });
   } catch (err) {
     throw err;
