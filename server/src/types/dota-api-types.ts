@@ -41,6 +41,6 @@ export interface IDotaHero {
 export interface IDotaTeamHero 
   extends Pick<IDotaHero, 'localized_name'> {
   hero_id: number;
+  games_played: number;
   wins: number;
-  losses: number;
 }

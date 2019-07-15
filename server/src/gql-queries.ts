@@ -41,7 +41,7 @@ export const getTeamIDs = {
   stringified: print(_getTeamIDs)
 };
 
-const _setTeamHeroes = gql`
+const _setHeroes = gql`
   mutation insert_dota2_hero($objects: [dota2_hero_insert_input!]!) {
     insert_dota2_hero(objects: $objects) {
       returning {
@@ -50,6 +50,21 @@ const _setTeamHeroes = gql`
     }
   }
 `;
+export const setHeroes = {
+  ast: _setHeroes,
+  stringified: print(_setHeroes)
+};
+
+const _setTeamHeroes = gql`
+  mutation insert_dota2_team_hero($objects: [dota2_team_hero_insert_input!]!) {
+    insert_dota2_team_hero(objects: $objects) {
+      returning {
+        id
+      }
+    }
+  }
+`;
+
 export const setTeamHeroes = {
   ast: _setTeamHeroes,
   stringified: print(_setTeamHeroes)
