@@ -23,3 +23,10 @@ Everything should be communicating now.
 
 ## database seeding
 #### Some insertions may take several minutes purely to dodge the Dota 2 Open API rate limiting, currently at 60 calls per minute.  
+
+## errors
+#### Below are some errors I ran into which might help you.  
+
+> When fetching the GraphQL schema from Hasura through Apollo codegen
+> Error: `Type query_root must define one or more fields.`
+> Fix: Your Hasura container is probably not running or was inaccessible at the time of the download.
