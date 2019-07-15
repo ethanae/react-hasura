@@ -6,11 +6,8 @@ subscribe('dota2', 'team.heroes.insert', async msg => {
   if (msg) {
     try {
       const { teamId } = JSON.parse(msg.content.toString());
-      const heroes = await dotaApi.fetchTeamHeroes(teamId);
-      const teamHeroes = heroes.data.map(hero => {
-        
-      });
-      new DotaService().setTeamHeroes()
+      const response = await dotaApi.fetchTeamHeroes(teamId);
+      await new DotaService().setTeamHeroes(response.data);
     } catch (err) {
       throw err;
     }
