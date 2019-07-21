@@ -44,3 +44,19 @@ export interface IDotaTeamHero
   games_played: number;
   wins: number;
 }
+
+export interface IRecentMatch {
+  xp_per_min: number;
+  tower_damage: number;
+  start_time: number;
+  radiant_win: boolean;
+  player_slot: number;
+  match_id: number;
+  last_hits: number;
+  kills: number;
+  gold_per_min: number;
+  duration: number;
+  deaths: number;
+  assists: number;
+  hero: { localized_name: string; };
+}
