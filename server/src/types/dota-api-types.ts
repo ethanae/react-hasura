@@ -38,7 +38,7 @@ export interface IDotaHero {
   legs: number;
 }
 
-export interface IDotaTeamHero 
+export interface IDotaTeamHero
   extends Pick<IDotaHero, 'localized_name'> {
   hero_id: number;
   games_played: number;
@@ -46,17 +46,29 @@ export interface IDotaTeamHero
 }
 
 export interface IRecentMatch {
-  xp_per_min: number;
-  tower_damage: number;
-  start_time: number;
-  radiant_win: boolean;
-  player_slot: number;
-  match_id: number;
-  last_hits: number;
-  kills: number;
-  gold_per_min: number;
-  duration: number;
-  deaths: number;
-  assists: number;
-  hero: { localized_name: string; };
+  match_id: number; 
+  player_slot: number; 
+  radiant_win: boolean; 
+  duration: number; 
+  game_mode: number; 
+  lobby_type: number; 
+  hero_id: number; 
+  start_time: number; 
+  version: number; 
+  kills: number; 
+  deaths: number; 
+  assists: number; 
+  skill?: any; 
+  xp_per_min: number; 
+  gold_per_min: number; 
+  hero_damage: number; 
+  tower_damage: number; 
+  hero_healing: number; 
+  last_hits: number; 
+  lane: number; 
+  lane_role: number; 
+  is_roaming: boolean; 
+  cluster: number; 
+  leaver_status: number; 
+  party_size: number
 }
