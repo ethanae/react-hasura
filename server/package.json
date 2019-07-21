@@ -16,7 +16,7 @@
     "build": "rm -rf ./build && tsc -p tsconfig.json",
     "serve": "node ./build/server.js",
     "download-gql-schemas": "apollo schema:download graphql-schema.json --endpoint http://localhost:1337/v1alpha1/graphql --header 'X-Hasura-Admin-Secret: jkasvbdhbjaasdkahbsd'",
-    "generate-query-type-defs": "apollo client:codegen --localSchemaFile=graphql-schema.json --target=typescript --queries=src/gql-queries.ts --tagName=gql --globalTypesFile=src/types/graphql-server-types.ts",
+    "generate-query-type-defs": "apollo client:codegen --localSchemaFile=graphql-schema.json --target=typescript --queries=src/gql-queries.ts --tagName=gql --globalTypesFile=src/types/graphql-server-types.ts types",
     "postinstall": "yarn download-gql-schemas && yarn generate-query-type-defs"
   },
   "devDependencies": {
