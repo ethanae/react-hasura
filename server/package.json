@@ -13,10 +13,10 @@
     "graphql-tag": "^2.10.1"
   },
   "scripts": {
-    "build": "tsc",
-    "serve": "node build/server.js",
+    "build": "rm -rf ./build && tsc -p tsconfig.json",
+    "serve": "node ./build/server.js",
     "download-gql-schemas": "apollo schema:download graphql-schema.json --endpoint http://localhost:1337/v1alpha1/graphql --header 'X-Hasura-Admin-Secret: jkasvbdhbjaasdkahbsd'",
-    "generate-query-type-defs": "apollo client:codegen --localSchemaFile=graphql-schema.json --target=typescript --queries=src/gql-queries.ts --tagName=gql --globalTypesFile=src/types/graphql-server-types.ts types",
+    "generate-query-type-defs": "apollo client:codegen --localSchemaFile=graphql-schema.json --target=typescript --queries=src/gql-queries.ts --tagName=gql --globalTypesFile=src/types/graphql-server-types.ts",
     "postinstall": "yarn download-gql-schemas && yarn generate-query-type-defs"
   },
   "devDependencies": {
