@@ -69,3 +69,18 @@ export const setTeamHeroes = {
   ast: _setTeamHeroes,
   stringified: print(_setTeamHeroes)
 };
+
+export const _setPlayerRecentMatches = gql`
+  mutation insert_dota2_player_recent_match($objects: [dota2_player_recent_match_insert_input!]!) {
+    insert_dota2_player_recent_match(objects: $objects) {
+      returning {
+        id
+      }
+    }
+  }
+`;
+
+export const setPlayerRecentMatches = {
+  ast: _setPlayerRecentMatches,
+  stringified: print(_setPlayerRecentMatches)
+};
