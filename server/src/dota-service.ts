@@ -80,7 +80,6 @@ export default class DotaService {
     try {
       const response = await DotaApi.fetchHeroes();
       const heroes = this.mapHeroes(response.data);
-      console.log({ response: response.data });
       return (
         await
           this.dotaRepository
@@ -102,6 +101,7 @@ export default class DotaService {
             .set<insert_dota2_player_recent_match, insert_dota2_player_recent_matchVariables>(_setPlayerRecentMatches.stringified, { objects: matches })
       );
     } catch (err) {
+      console.error({ err });
       throw err;
     }
   }
