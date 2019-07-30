@@ -4,9 +4,39 @@ import { IDotaApiTeam, IDotaApiPlayer, IDotaTeamHero, IDotaHero, IRecentMatch } 
 const baseUrl = 'https://api.opendota.com/api';
 
 export default {
-  fetchTeams: async () => await axios.get<IDotaApiTeam[]>(baseUrl + '/teams'),
-  fetchPlayers: async () => await axios.get<IDotaApiPlayer[]>(baseUrl + '/proPlayers'),
-  fetchHeroes: async () => await axios.get<IDotaHero[]>(baseUrl + '/heroes'),
-  fetchTeamHeroes: async (teamId: string) => await axios.get<IDotaTeamHero[]>(baseUrl + `/teams/${teamId}/heroes`),
-  fetchRecentMatches: async (playerAccountId: number) => await axios.get<IRecentMatch[]>(baseUrl + `/players/${playerAccountId}/recentmatches`) 
+  fetchTeams: async () => {
+    try {
+      return await axios.get<IDotaApiTeam[]>(baseUrl + '/teams');
+    } catch (err) {
+      throw err;
+    }
+  },
+  fetchPlayers: async () => {
+    try {
+      return await axios.get<IDotaApiPlayer[]>(baseUrl + '/proPlayers');
+    } catch (err) {
+      throw err;
+    }
+  },
+  fetchHeroes: async () => {
+    try {
+      return await axios.get<IDotaHero[]>(baseUrl + '/heroes');      
+    } catch (err) {
+      throw err;
+    }
+  },
+  fetchTeamHeroes: async (teamId: string) => {
+    try {
+      return await axios.get<IDotaTeamHero[]>(baseUrl + `/teams/${teamId}/heroes`)
+    } catch (err) {
+      throw err;
+    }
+  },
+  fetchRecentMatches: async (playerAccountId: number) => {
+    try {
+      return await axios.get<IRecentMatch[]>(baseUrl + `/players/${playerAccountId}/recentmatches`);
+    } catch (err) {
+      throw err;
+    }
+  }
 }
