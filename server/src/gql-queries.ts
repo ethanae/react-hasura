@@ -15,6 +15,18 @@ export const setPlayers = {
   stringified: print(_setPlayers)
 };
 
+const _getPlayerAccIDs = gql`
+  query playerAccIDs {
+    dota2_player {
+      account_id
+    }
+  }
+`;
+export const getPlayerAccIDs = {
+  ast: _getPlayerAccIDs,
+  stringified: print(_getPlayerAccIDs)
+};
+
 const _setTeams = gql`
   mutation insert_dota2_team($objects: [dota2_team_insert_input!]!) {
     insert_dota2_team(objects: $objects) {
