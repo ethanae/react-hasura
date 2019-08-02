@@ -6,13 +6,15 @@ import {
   getTeamIDs as _getTeamIDs,
   setTeamHeroes as _setTeamHeroes,
   setHeroes as _setHeroes,
-  setPlayerRecentMatches as _setPlayerRecentMatches
+  setPlayerRecentMatches as _setPlayerRecentMatches,
+  getPlayerAccIDs as _getPlayerAccIDs
 } from './gql-queries';
 import { insert_dota2_teamVariables, insert_dota2_team } from './types/insert_dota2_team';
 import { IDotaApiTeam, IDotaApiPlayer, IDotaTeamHero, IDotaHero, IRecentMatch } from './types/dota-api-types';
 import { dota2_team_insert_input, dota2_player_insert_input, dota2_team_hero_insert_input } from './types/graphql-server-types';
 import { insert_dota2_playerVariables, insert_dota2_player } from './types/insert_dota2_player';
 import { getTeams } from './types/getTeams';
+import { playerAccIDs } from './types/playerAccIDs';
 import { insert_dota2_team_hero, insert_dota2_team_heroVariables } from './types/insert_dota2_team_hero';
 import { insert_dota2_hero, insert_dota2_heroVariables } from './types/insert_dota2_hero';
 import { insert_dota2_player_recent_match, insert_dota2_player_recent_matchVariables } from './types/insert_dota2_player_recent_match';
@@ -26,6 +28,16 @@ export default class DotaService {
   async getTeamIDs() {
     try {
       const result = await this.dotaRepository.get<getTeams>(_getTeamIDs.stringified);
+      return result;
+    } catch (err) {
+      console.error({ err });
+      throw err;
+    }
+  }
+
+  async getPlayerAccountIDs() {
+    try {
+      const result = await this.dotaRepository.get<playerAccIDs>(_getPlayerAccIDs.stringified);
       return result;
     } catch (err) {
       console.error({ err });

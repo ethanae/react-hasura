@@ -6,37 +6,69 @@ import cliProgress = require('cli-progress');
 const PORT = parseInt(process.env.PORT || '3000');
 const fasty = fastify({ logger: true });
 
+let timeoutMultiplier = -1;
+
 fasty.post('/init', async (req, reply) => {
   try {
-    const bar = new cliProgress.Bar({ 
-      stopOnComplete: true,
-      format: `team hero progress [{bar}] {percentage}% | ETA: {eta}s | {value}/{total}`
-    }, cliProgress.Presets.shades_classic);
-    const ds = new DotaService();
-    await ds.setTeams();
-    await ds.setPlayers();
-    await ds.setHeroes();
-    let timeoutMultiplier = -1;
-    const teamIDs = await ds.getTeamIDs();
-    bar.start(teamIDs.dota2_team.length, 0);
+    const dotaService = new DotaService();
 
-    chunkArr(teamIDs.dota2_team, 5).map((teams, i) => {
-      timeoutMultiplier++;
-      const timeout = 6000 * timeoutMultiplier;
-      setTimeout(async () => {
-        const promises = teams.map(async t => {
-          const response = await dotaApi.fetchTeamHeroes(t.team_id.toString());
-          return ds.setTeamHeroes(t.team_id, response.data);
-        });
-        const results = await Promise.all(promises);
-        bar.increment(results.length);
-      }, timeout);
-    });
-    reply.status(200).send();
+    await dotaService.setTeams();
+    await dotaService.setPlayers();
+    await dotaService.setHeroes();
+
+    reply.status(201).send();
   } catch (err) {
     reply.send({ err });
     fasty.log.error(err);
   }
+});
+
+fasty.post('/team/heroes', async () => {
+  const bar = new cliProgress.Bar({
+    stopOnComplete: true,
+    format: `team hero progress [{bar}] {percentage}% | ETA: {eta}s | {value}/{total}`
+  }, cliProgress.Presets.shades_classic);
+
+  const dotaService = new DotaService();
+  const teamIDs = await dotaService.getTeamIDs();
+  bar.start(teamIDs.dota2_team.length, 0);
+
+  chunkArr(teamIDs.dota2_team, 5).map((teams, i) => {
+    timeoutMultiplier++;
+    const timeout = 6000 * timeoutMultiplier;
+    setTimeout(async () => {
+      const promises = teams.map(async t => {
+        const response = await dotaApi.fetchTeamHeroes(t.team_id.toString());
+        return dotaService.setTeamHeroes(t.team_id, response.data);
+      });
+      const results = await Promise.all(promises);
+      bar.increment(results.length);
+    }, timeout);
+  });
+});
+
+fasty.post('/player/matches', async () => {
+  const bar = new cliProgress.Bar({
+    stopOnComplete: true,
+    format: `team hero progress [{bar}] {percentage}% | ETA: {eta}s | {value}/{total}`
+  }, cliProgress.Presets.shades_classic);
+
+  const dotaService = new DotaService();
+  const teamIDs = await dotaService.getPlayerAccountIDs();
+  bar.start(teamIDs.dota2_player.length, 0);
+
+  chunkArr(teamIDs.dota2_player, 5).map((players, i) => {
+    timeoutMultiplier++;
+    const timeout = 6000 * timeoutMultiplier;
+    setTimeout(async () => {
+      const promises = players.map(async p => {
+        const response = await dotaApi.fetchTeamHeroes(p.account_id.toString());
+        return dotaService.setTeamHeroes(p.account_id, response.data);
+      });
+      const results = await Promise.all(promises);
+      bar.increment(results.length);
+    }, timeout);
+  });
 });
 
 fasty.get('*', async (req, reply) => {
