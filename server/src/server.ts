@@ -11,32 +11,41 @@ let timeoutMultiplier = -1;
 
 fasty.register(fastifyWs);
 
-fasty.post('/init', async (req, reply) => {
-  try {
-    const dotaService = new DotaService();
-    await dotaService.setTeams();
-    await dotaService.setPlayers();
-    await dotaService.setHeroes();
+// @ts-ignore
+fasty.get('/init', { websocket: true }, async (conn, req) => {
+  let progress = 0;
+  const total = 3;
+  const dotaService = new DotaService();
 
-    reply.status(201).send();
-  } catch (err) {
-    reply.send({ err });
-    fasty.log.error(err);
-  }
+  conn.socket.send(JSON.stringify({ progress: 0, total, message: 'Adding teams...' }));
+  dotaService.setTeams()
+    .then(_ => {
+      conn.socket.send(JSON.stringify({ progress: ++progress, total, message: 'Adding players...' }));
+      return dotaService.setPlayers();
+    }).then(_ => {
+      conn.socket.send(JSON.stringify({ progress: ++progress, total, message: 'Adding heroes...' }));
+      return dotaService.setHeroes();
+    }).then(_ => {
+      conn.send(JSON.stringify({ progress: ++progress, total }));
+      conn.end();
+    }).catch(err => {
+      conn.end();
+      fasty.log.error({ err });
+    });
 });
 
 // @ts-ignore
 fasty.get('/team/heroes', { websocket: true }, async (conn, req) => {
   const bar = new cliProgress.Bar({
     stopOnComplete: true,
-    format: `team hero progress [{bar}] {percentage}% | ETA: {eta}s | {value}/{total}`
+    format: `team heroes [{bar}] {percentage}% | ETA: {eta}s | {value}/{total}`
   }, cliProgress.Presets.shades_classic);
 
   let progress = 0;
   const dotaService = new DotaService();
   const teamIDs = await dotaService.getTeamIDs();
   bar.start(teamIDs.dota2_team.length, 0);
-  conn.socket.send(JSON.stringify({ progress, total: teamIDs.dota2_team.length }));
+  conn.socket.send(JSON.stringify({ progress, total: teamIDs.dota2_team.length, message: 'Adding each team\'s data...' }));
 
   chunkArr(teamIDs.dota2_team, 5).map(teams => {
     timeoutMultiplier++;
@@ -49,8 +58,8 @@ fasty.get('/team/heroes', { websocket: true }, async (conn, req) => {
       const results = await Promise.all(promises);
       bar.increment(results.length);
       progress += results.length;
-      conn.socket.send(JSON.stringify({ progress, total: teamIDs.dota2_team.length }));
-      progress === teamIDs.dota2_team.length && conn.socket.end();
+      conn.socket.send(JSON.stringify({ progress, total: teamIDs.dota2_team.length, message: 'Adding each team\'s data...' }));
+      progress === teamIDs.dota2_team.length && conn.end();
     }, timeout);
   });
 });
@@ -59,14 +68,14 @@ fasty.get('/team/heroes', { websocket: true }, async (conn, req) => {
 fasty.get('/player/matches', { websocket: true }, async (conn, req) => {
   const bar = new cliProgress.Bar({
     stopOnComplete: true,
-    format: `team hero progress [{bar}] {percentage}% | ETA: {eta}s | {value}/{total}`
+    format: `player matches [{bar}] {percentage}% | ETA: {eta}s | {value}/{total}`
   }, cliProgress.Presets.shades_classic);
 
   let progress = 0;
   const dotaService = new DotaService();
   const playerAccountIDs = await dotaService.getPlayerAccountIDs();
   bar.start(playerAccountIDs.dota2_player.length, 0);
-  conn.socket.send(JSON.stringify({ progress, total: playerAccountIDs.dota2_player.length }));
+  conn.socket.send(JSON.stringify({ progress, total: playerAccountIDs.dota2_player.length, message: 'Adding each player\'s data...' }));
 
   chunkArr(playerAccountIDs.dota2_player, 5).map(players => {
     timeoutMultiplier++;
@@ -79,8 +88,8 @@ fasty.get('/player/matches', { websocket: true }, async (conn, req) => {
       const results = await Promise.all(promises);
       bar.increment(results.length);
       progress += results.length;
-      conn.socket.send(JSON.stringify({ progress, total: playerAccountIDs.dota2_player.length }));
-      progress === playerAccountIDs.dota2_player.length && conn.socket.end();
+      conn.socket.send(JSON.stringify({ progress, total: playerAccountIDs.dota2_player.length, message: 'Adding each player\'s data...' }));
+      progress === playerAccountIDs.dota2_player.length && conn.end();
     }, timeout);
   });
 });
