@@ -19,21 +19,19 @@ fasty.get('/init', { websocket: true }, async (conn, req) => {
   const total = 3;
   const dotaService = new DotaService();
 
-  conn.socket.send(JSON.stringify({ progress: 0, total, message: 'Adding teams...' }));
-  dotaService.setTeams()
-    .then(_ => {
-      conn.socket.send(JSON.stringify({ progress: ++progress, total, message: 'Adding players...' }));
-      return dotaService.setPlayers();
-    }).then(_ => {
-      conn.socket.send(JSON.stringify({ progress: ++progress, total, message: 'Adding heroes...' }));
-      return dotaService.setHeroes();
-    }).then(_ => {
-      conn.send(JSON.stringify({ progress: ++progress, total }));
-      conn.end();
-    }).catch(err => {
-      conn.end();
-      fasty.log.error({ err });
-    });
+  try {
+    conn.socket.send(JSON.stringify({ progress: 0, total, message: 'Adding teams...' }));
+    await dotaService.setTeams();
+    conn.socket.send(JSON.stringify({ progress: ++progress, total, message: 'Adding players...' }));
+    await dotaService.setPlayers();
+    conn.socket.send(JSON.stringify({ progress: ++progress, total, message: 'Adding heroes...' }));
+    await dotaService.setHeroes();
+    conn.send(JSON.stringify({ progress: ++progress, total }));
+    conn.end();
+  } catch (err) {
+    conn.end();
+    fasty.log.error({ err });
+  }
 });
 
 // @ts-ignore
@@ -117,7 +115,7 @@ function chunkArr<T>(arr: T[], size: number) {
 }
 
 function incrementTimeout() {
-  if(timeSinceLastUpdate > 6) {
+  if (timeSinceLastUpdate > 6) {
     timeoutMultiplier = 0;
   } else {
     timeoutMultiplier++;
