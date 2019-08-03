@@ -9,30 +9,16 @@ import Home from './Home';
 import Team from './Team';
 import { Nav } from './Style';
 import PlayerDetail from './PlayerDetail';
+import 'react-circular-progressbar/dist/styles.css';
+import { CircularProgressbar } from 'react-circular-progressbar';
 
 export default class extends React.Component<{}, { updateMessage: string; }> {
   constructor(props: {}) {
     super(props);
     this.state = { updateMessage: '' };
   }
-  componentDidMount() {
-    window.addEventListener('onInsertTeamHeroesProgress', (this.onInsertTeamHeroes as EventListener));
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('addEventListener', (this.onInsertTeamHeroes as EventListener));
-  }
-
-  onInsertTeamHeroes = (e: CustomEvent) => {
-    this.setState({ updateMessage: `Added ${parseInt(e.detail)} more team details` });
-  }
-
-  updateMessageDisplayTimer() {
-    setTimeout(() => this.setState({ updateMessage: '' }), 10000);
-  }
-
+ 
   render() {
-    this.updateMessageDisplayTimer();
     return (
       <Router>
         <div className="mb-5">
@@ -53,7 +39,7 @@ export default class extends React.Component<{}, { updateMessage: string; }> {
             <Link className="btn btn-link n-link" to='/heroes'>Heroes</Link>
             <Link className="btn btn-link n-link" to='/stats'>Stats</Link>
             <span className="pull-right text-light text-sm">
-              {this.state.updateMessage}
+              <CircularProgressbar styles={{ root: { height: '100px', width: '100px' } }} value={this.state.progress} text={`${this.state.progress}%`} />
             </span>
           </Nav>
 
