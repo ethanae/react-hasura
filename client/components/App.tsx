@@ -20,12 +20,12 @@ const GET_PROGRESS = gql`{
   }
 `;
 
-class App extends React.Component<{ client: Client }, { progressMessage: string; progress: number; initStarted: boolean; initFinished: boolean; }> {
+class App extends React.Component<{ client: Client }, { progressMessage: string; progress: number | null; initStarted: boolean; initFinished: boolean; }> {
   constructor(props: { client: Client }) {
     super(props);
     this.state = {
       progressMessage: 'Click the Aegis to initialise the App',
-      progress: 0,
+      progress: null,
       initStarted: false,
       initFinished: false
     }
