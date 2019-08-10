@@ -29,7 +29,7 @@ export default (props: IProps) => {
         </p>
       </div>
       <div className="d-flex flex-row flex-wrap justify-content-center">
-        <CardWrapper clickable={false} className="card m-2 w-25 small">
+       {mostPlayed && <CardWrapper clickable={false} className="card m-2 w-25 small">
           <div className="card-body">
             <h4 className="card-title text-right text-bold text-primary">Most Played Hero</h4>
             <h5 className="card-text text-center border border-light">
@@ -52,9 +52,9 @@ export default (props: IProps) => {
               {mostPlayed.hero.roles.join(', ')}
             </p>
           </div>
-        </CardWrapper>
+        </CardWrapper>}
 
-        <CardWrapper clickable={false} className="card m-2 w-25 small">
+        { mostSuccessful && <CardWrapper clickable={false} className="card m-2 w-25 small">
           <div className="card-body">
             <h4 className="card-title text-right text-bold text-primary">Most Successful Hero</h4>
             <h5 className="card-text text-center border border-light">
@@ -77,9 +77,9 @@ export default (props: IProps) => {
               {mostSuccessful.hero.roles.join(', ')}
             </p>
           </div>
-        </CardWrapper>
+        </CardWrapper>}
 
-        <CardWrapper clickable={false} className="card m-2 w-25 small">
+        {leastSuccessful && <CardWrapper clickable={false} className="card m-2 w-25 small">
           <div className="card-body">
             <h4 className="card-title text-right text-bold text-primary">Least Successful Hero</h4>
             <h5 className="card-text text-center border border-light">
@@ -102,7 +102,7 @@ export default (props: IProps) => {
               {leastSuccessful.hero.roles.join(', ')}
             </p>
           </div>
-        </CardWrapper>
+        </CardWrapper>}
       </div>
     </div>
   );
