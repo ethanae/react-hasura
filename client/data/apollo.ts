@@ -5,6 +5,7 @@ import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
+import gql from 'graphql-tag';
 
 const graphqlApiUri = 'http://localhost:1337/v1alpha1/graphql';
 const graphqlSocketUri = 'ws://localhost:1337/v1alpha1/graphql';
@@ -33,10 +34,33 @@ const link = split(
   webSocketLink,
   httpLink
 );
+const typeDefs = gql`
+  extend type Query {
+    progress: Int!
+  }
 
+  extend type Mutation {
+    updateProgress(progress: Int!): [Launch]
+  }
+`;
+const cache = new InMemoryCache();
 export const client = new ApolloClient({
   link,
-  cache: new InMemoryCache()
+  cache,
+  typeDefs
+});
+
+cache.writeData({
+  data: {
+    progress: null,
+    visibilityFilter: 'SHOW_ALL',
+    networkStatus: {
+      __typename: 'NetworkStatus',
+      isConnected: false,
+    },
+  },
 });
 
 type Definition = { kind: string; operation?: string; };
+
+export type Client = typeof client;
