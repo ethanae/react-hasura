@@ -77,11 +77,10 @@ fasty.get('/player/matches', { websocket: true }, async (conn, req) => {
 
   chunkArr(playerAccountIDs.dota2_player, 5).map(players => {
     timeoutMultiplier++;
-    const timeout = 6000 * timeoutMultiplier;
+    const timeout = 7000 * timeoutMultiplier;
     setTimeout(async () => {
       const promises = players.map(async p => {
-        const response = await dotaApi.fetchTeamHeroes(p.account_id.toString());
-        return dotaService.setTeamHeroes(p.account_id, response.data);
+        return dotaService.setPlayerMatches(p.account_id);
       });
       const results = await Promise.all(promises);
       bar.increment(results.length);

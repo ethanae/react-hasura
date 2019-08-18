@@ -47,7 +47,8 @@ const cache = new InMemoryCache();
 export const client = new ApolloClient({
   link,
   cache,
-  typeDefs
+  typeDefs,
+  resolvers: {}
 });
 
 cache.writeData({

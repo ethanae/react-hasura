@@ -17,6 +17,7 @@ import { Client } from '../data/apollo';
 
 const GET_PROGRESS = gql`{
     progress @client
+    progressMessage @client
   }
 `;
 
@@ -39,12 +40,15 @@ class App extends React.Component<{ client: Client }, { progressMessage: string;
 
   onAppInitProgress = (e: MessageEvent) => {
     const data = JSON.parse(e.data);
+    const progress = Math.round((data.progress / data.total) * 100);
+
     this.props.client.writeData({
       data: { 
-        progress: this.state.progress,
+        progress,
         progressMessage: data.message
       }
     });
+    this.setState({ progressMessage: data.message, progress });
   }
 
   addTeamHeroes = () => {
@@ -83,7 +87,6 @@ class App extends React.Component<{ client: Client }, { progressMessage: string;
                 {
                   ({ data, error }) => {
                     if (error) {
-                      console.log(error);
                       return null;
                     }
                     if (data && data.progress) {
