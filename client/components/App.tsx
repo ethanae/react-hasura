@@ -20,19 +20,16 @@ const GET_PROGRESS = gql`{
   }
 `;
 
-class App extends React.Component<{ client: Client }, { progressMessage: string; progress: number | null; initStarted: boolean; initFinished: boolean; }> {
+class App extends React.Component<{ client: Client }, { progressMessage: string; progress: number | null; }> {
   constructor(props: { client: Client }) {
     super(props);
     this.state = {
-      progressMessage: 'Click the Aegis to initialise the App',
+      progressMessage: 'Click the Aegis to initialise the app',
       progress: null,
-      initStarted: false,
-      initFinished: false
     }
   }
 
   onInitialiseApp = () => {
-    this.setState({ initStarted: true });
     const ws = new WebSocket('ws://localhost:3000/init');
     ws.onmessage = this.onAppInitProgress;
     ws.onclose = e => {
@@ -42,13 +39,10 @@ class App extends React.Component<{ client: Client }, { progressMessage: string;
 
   onAppInitProgress = (e: MessageEvent) => {
     const data = JSON.parse(e.data);
-    this.setState({
-      progress: Math.round((data.progress / data.total) * 100),
-      progressMessage: data.message
-    });
-    this.props.client && this.props.client.writeData({
+    this.props.client.writeData({
       data: { 
-        progress: this.state.progress
+        progress: this.state.progress,
+        progressMessage: data.message
       }
     });
   }
@@ -56,9 +50,6 @@ class App extends React.Component<{ client: Client }, { progressMessage: string;
   addTeamHeroes = () => {
     const ws = new WebSocket('ws://localhost:3000/team/heroes');
     ws.onmessage = this.onAppInitProgress;
-    ws.onclose = e => {
-      this.setState({ initFinished: true });
-    };
   }
 
   addPlayerMatches = () => {
@@ -70,8 +61,6 @@ class App extends React.Component<{ client: Client }, { progressMessage: string;
   }
 
   render() {
-    const data = this.props.client && this.props.client.readQuery({ query: GET_PROGRESS });
-    console.log(data)
     return (
       <Router>
         <div className="mb-5">
@@ -85,9 +74,7 @@ class App extends React.Component<{ client: Client }, { progressMessage: string;
                 onMouseLeave={e => (e.target as HTMLImageElement).setAttribute('src', dota2Logo)}
               />
             </Link>
-            <Link className="btn btn-link n-link" to='/teams'>
-              Teams
-            </Link>
+            <Link className="btn btn-link n-link" to='/teams'>Teams</Link>
             <Link className="btn btn-link n-link" to='/players'>Players</Link>
             <Link className="btn btn-link n-link" to='/heroes'>Heroes</Link>
             <Link className="btn btn-link n-link" to='/stats'>Stats</Link>
@@ -100,7 +87,13 @@ class App extends React.Component<{ client: Client }, { progressMessage: string;
                       return null;
                     }
                     if (data && data.progress) {
-                      return <CircularProgressbar styles={{ root: { height: '20%', width: '20%' } }} value={data.progress} text={`${data.progress}%`} />;
+                      return (
+                        <CircularProgressbar 
+                          styles={{ root: { height: '20%', width: '20%' } }} 
+                          value={data.progress} 
+                          text={`${data.progress}%`} 
+                        />
+                      );
                     }
                     return null;
                   }
@@ -109,15 +102,17 @@ class App extends React.Component<{ client: Client }, { progressMessage: string;
             </span>
           </Nav>
 
-          <Route path="/" exact render={(props) => {
+          <Route path="/" exact render={props => {
             return (
               <Home {...props}
                 client={this.props.client}
-                dataProgress={{ message: this.state.progressMessage, progress: this.state.progress }}
+                dataProgress={{ 
+                  message: this.state.progressMessage, 
+                  progress: this.state.progress 
+                }}
                 onInitialiseApp={this.onInitialiseApp}
               />
-            );
-            }
+            )}
           } />
           <Route path="/teams/:teamName" component={Team} />
           <Route exact path="/teams" component={Teams} />

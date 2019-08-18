@@ -57,7 +57,7 @@ export default class extends React.Component<{}, { offset: number; limit: number
                         return data.dota2_team.map(t => {
                             const Team = withRouter(({ history }) => (
                               <RowHover
-                                key={t.id}
+                                key={t.team_id}
                                 onClick={() => history.push('/teams/' + t.team_id, { team: t })}>
                                 <td>
                                   <img src={t.logo_url} className="img-fluid" alt="" width="50" height="50" />

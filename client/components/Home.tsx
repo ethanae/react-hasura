@@ -14,7 +14,6 @@ export interface IProps {
 }
 
 const Home = (props: IProps) => {
-  console.log(props)
   return (
     <div className="container-fluid text-light">
       <div className="d-flex flex-column align-items-center mt-5">

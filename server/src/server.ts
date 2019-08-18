@@ -8,8 +8,6 @@ const fasty = fastify({ logger: true });
 const fastifyWs = require('fastify-websocket');
 
 let timeoutMultiplier = -1;
-let timeSinceLastUpdate = 0;
-let timer: NodeJS.Timeout;
 
 fasty.register(fastifyWs);
 
@@ -48,7 +46,7 @@ fasty.get('/team/heroes', { websocket: true }, async (conn, req) => {
   conn.socket.send(JSON.stringify({ progress, total: teamIDs.dota2_team.length, message: 'Adding each team\'s data...' }));
 
   chunkArr(teamIDs.dota2_team, 5).map(teams => {
-    incrementTimeout();
+    timeoutMultiplier++;
     const timeout = 6000 * timeoutMultiplier;
     setTimeout(async () => {
       const promises = teams.map(async t => {
@@ -78,7 +76,7 @@ fasty.get('/player/matches', { websocket: true }, async (conn, req) => {
   conn.socket.send(JSON.stringify({ progress, total: playerAccountIDs.dota2_player.length, message: 'Adding each player\'s data...' }));
 
   chunkArr(playerAccountIDs.dota2_player, 5).map(players => {
-    incrementTimeout();
+    timeoutMultiplier++;
     const timeout = 6000 * timeoutMultiplier;
     setTimeout(async () => {
       const promises = players.map(async p => {
@@ -112,15 +110,4 @@ function chunkArr<T>(arr: T[], size: number) {
     chunks.push(arr.slice(i, i + size));
   }
   return chunks;
-}
-
-function incrementTimeout() {
-  if (timeSinceLastUpdate > 6) {
-    timeoutMultiplier = 0;
-  } else {
-    timeoutMultiplier++;
-  }
-  !timer && (timer = setInterval(() => {
-    timeSinceLastUpdate += 1;
-  }, 1000));
 }

@@ -53,6 +53,7 @@ export const client = new ApolloClient({
 cache.writeData({
   data: {
     progress: null,
+    progressMessage: 'Click the Aegis to initialise the app',
     visibilityFilter: 'SHOW_ALL',
     networkStatus: {
       __typename: 'NetworkStatus',
