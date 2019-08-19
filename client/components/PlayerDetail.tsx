@@ -14,7 +14,6 @@ export interface IProps {
 
 export default (props: IProps) => {
   const { player } = props.location && props.location.state;
-  console.log({ player })
   if (!player) return <div>Uknown player</div>;
 
   return (
