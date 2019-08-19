@@ -74,10 +74,10 @@ export interface IRecentMatch {
   hero: { localized_name: string; };
 }
 
-export interface IRecentPlayerMatchResponse {
+export interface IRecentPlayerMatchResponse  {
   dota2_player: [{
     player_recent_matches: IRecentMatch[];
-  }]
+  } & IPlayerNestedTeam]
 }
 
 export interface IPlayerTeamQueryNestedResponse {

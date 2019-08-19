@@ -6,6 +6,7 @@ const dota2Loader = require('../assets/qwe-loader.gif');
 import { createToast } from '../utils';
 import PlayerCard from './PlayerCard';
 import TeamSummary from './TeamSummary';
+import { withRouter } from 'react-router';
 
 export interface IProps {
   team: ITeam;
@@ -56,7 +57,16 @@ export default (props: IProps) => {
                 <div className="d-flex flex-row flex-wrap justify-content-center">
                   { 
                     data && data.dota2_player.length ? 
-                      data.dota2_player.map(p => <PlayerCard key={p.account_id} player={p} />) 
+                      data.dota2_player.map(p => {
+                        const Card = withRouter(({ history }) => (
+                          <PlayerCard 
+                            key={p.account_id} 
+                            player={p}
+                            onClick={() => history.push('/player/' + p.account_id, { player: p })}
+                          />
+                        ))
+                        return <Card />;
+                      })
                       :
                       <h3>No players found</h3>
                   }

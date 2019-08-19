@@ -7,13 +7,17 @@ const dota2Loader = require('../assets/qwe-loader.gif');
 
 export interface IProps {
   player: IPlayer;
+  onClick: React.MouseEventHandler
 }
 
 export default (props: IProps) => {
   const { avatar_full, player_name, country_code } = props.player;
 
   return (
-    <CardWrapper clickable={true} className="card p-2 m-2 ">
+    <CardWrapper 
+      clickable={true} 
+      className="card p-2 m-2" 
+      onClick={props.onClick}>
       <ProgressiveImage src={avatar_full} placeholder="">
         {(src: string, loading: boolean) => (
           loading ?
