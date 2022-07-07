@@ -12,7 +12,7 @@
     "apollo-link-ws": "^1.0.17",
     "bootstrap": "^4.3.1",
     "graphql": "^14.2.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "react": "^16.8.6",
     "react-apollo": "^2.5.4",
     "react-circular-progressbar": "^2.0.1",
